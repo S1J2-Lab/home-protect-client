@@ -38,7 +38,7 @@
   "packageManager": "yarn@4.13.0",
   "lint-staged": {
     "**/*.{ts,tsx}": [
-      "eslint --fix",
+      "eslint",
       "prettier --write"
     ]
   }
