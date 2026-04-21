@@ -1,0 +1,35 @@
+name: PR CI
+# GitHub Actions 탭에 표시되는 이름
+
+on:
+  pull_request:
+# base branch 제한 없이 PR이면 CI 수행
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # GitHub이 제공하는 우분투 서버에서 실행
+    steps:
+      - uses: actions/checkout@v4
+      # 레포 코드를 서버에 내려받기
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      # Node.js 22 설치, yarn 캐시 활성화 (두 번째 실행부터 빠름)
+
+      - run: yarn install --immutable
+      # yarn.lock 기준으로 설치, lock 파일 변경 불가 (CI 안전장치)
+
+      - run: yarn lint
+      # ESLint 검사 (console.log 등 룰 위반 시 실패)
+
+      - run: yarn format:check
+      # Prettier 포맷 검사 (포맷 안 맞으면 실패)
+
+      - run: yarn build
+      # TypeScript 타입체크 + Vite 빌드 (둘 중 하나라도 실패하면 머지 불가)
+
+      # - run: yarn test
+      # 테스트 추가되면 활성화

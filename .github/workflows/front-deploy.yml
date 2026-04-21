@@ -1,0 +1,39 @@
+name: Frontend Deploy
+
+on:
+  push:
+    branches: [main]
+# main에 머지(push)될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - run: yarn install --immutable
+      - run: yarn build
+      # dist/ 폴더 생성
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      # GitHub Secrets에 저장한 AWS 키로 인증
+
+      - name: S3 업로드
+        run: aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }} --delete
+      # dist/ 폴더를 S3에 동기화
+      # --delete: S3에만 있고 dist/에 없는 파일은 삭제 (이전 빌드 파일 정리)
+
+      - name: CloudFront 캐시 무효화
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+      # 전체 캐시 무효화 → 사용자가 새 빌드 파일을 즉시 받을 수 있게
