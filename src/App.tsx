@@ -7,6 +7,7 @@ import './App.css';
 function App() {
   const [count, setCount] = useState(0);
   const x: number = '문자열'; // 타입 오류
+  console.log(x);
 
   return (
     <>
