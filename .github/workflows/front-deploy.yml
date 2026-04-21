@@ -20,6 +20,8 @@ jobs:
 
       - run: yarn install --immutable
       - run: yarn build
+        env:
+          VITE_APP_TITLE: ${{ secrets.VITE_APP_TITLE }}
       # dist/ 폴더 생성
 
       - uses: aws-actions/configure-aws-credentials@v4
