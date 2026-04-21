@@ -1,11 +1,10 @@
 ---
 name: Issue Template
 about: 이슈를 생성할 때 사용해주세요.
-title: "[type] "
+title: '[type] '
 labels: ''
 assignees: ''
 type: Feature
-
 ---
 
 ## 📄 이슈 설명
