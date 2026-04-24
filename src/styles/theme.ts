@@ -33,8 +33,6 @@ export const theme = {
     appBlueLight: '#eff3fb',
     appBlueMuted: '#d4dced',
 
-    statusCaution: '#dc2828',
-    statusCautionLight: '#fcf3f3',
     statusWarning: '#dc2828',
     statusWarningLight: '#fcf3f3',
     statusSafe: '#3b9b7b',
