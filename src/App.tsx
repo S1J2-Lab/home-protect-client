@@ -8,7 +8,7 @@ function App() {
 
         <Title>지켜줘 홈즈</Title>
         <Description>
-          ThemeProvider, GlobalStyles, 공통 색상과 radius가 잘 적용되는지
+          공통 색상, radius, shadow, font가 Emotion theme으로 잘 적용되는지
           확인하는 화면입니다.
         </Description>
 
@@ -20,8 +20,7 @@ function App() {
         <InfoBox>
           <strong>전역 스타일 확인</strong>
           <p>
-            body 배경색, 기본 폰트, 카드 색상, border, radius가 적용되는지
-            확인하세요.
+            배경색, 카드 색상, border, radius, shadow가 적용되는지 확인하세요.
           </p>
         </InfoBox>
       </Card>
@@ -34,8 +33,8 @@ export default App;
 const Page = styled.main`
   min-height: 100vh;
   padding: 40px 20px;
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.foreground};
+  background-color: ${({ theme }) => theme.colors.bg};
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,30 +45,30 @@ const Card = styled.section`
   max-width: 420px;
   padding: 28px;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius['2xl']};
-  background-color: ${({ theme }) => theme.colors.card};
-  color: ${({ theme }) => theme.colors.cardForeground};
+  border-radius: ${({ theme }) => theme.radius.xl};
+  background-color: ${({ theme }) => theme.colors.surface};
+  box-shadow: ${({ theme }) => theme.shadow.card};
 `;
 
 const Badge = styled.span`
   display: inline-flex;
   padding: 6px 10px;
   border-radius: ${({ theme }) => theme.radius.full};
-  background-color: ${({ theme }) => theme.colors.accent};
-  color: ${({ theme }) => theme.colors.accentForeground};
+  background-color: ${({ theme }) => theme.colors.primarySoft};
+  color: ${({ theme }) => theme.colors.primaryDark};
   font-size: 13px;
   font-weight: 700;
 `;
 
 const Title = styled.h1`
   margin: 18px 0 8px;
+  color: ${({ theme }) => theme.colors.text};
   font-size: 32px;
   line-height: 1.2;
 `;
 
 const Description = styled.p`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.mutedForeground};
+  color: ${({ theme }) => theme.colors.textSub};
   line-height: 1.6;
 `;
 
@@ -81,33 +80,36 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled.button`
   flex: 1;
-  border: 0;
   padding: 12px 14px;
-  border-radius: ${({ theme }) => theme.radius.lg};
+  border-radius: ${({ theme }) => theme.radius.md};
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.primaryForeground};
+  color: ${({ theme }) => theme.colors.surface};
   font-weight: 700;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryDark};
+  }
 `;
 
 const SecondaryButton = styled.button`
   flex: 1;
-  border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 12px 14px;
-  border-radius: ${({ theme }) => theme.radius.lg};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.secondaryForeground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.md};
+  background-color: ${({ theme }) => theme.colors.primarySoft};
+  color: ${({ theme }) => theme.colors.primary};
   font-weight: 700;
 `;
 
 const InfoBox = styled.div`
   margin-top: 20px;
   padding: 16px;
-  border-radius: ${({ theme }) => theme.radius.xl};
-  background-color: ${({ theme }) => theme.colors.muted};
-  color: ${({ theme }) => theme.colors.mutedForeground};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  background-color: ${({ theme }) => theme.colors.warningBg};
+  color: ${({ theme }) => theme.colors.textSub};
 
   p {
-    margin: 6px 0 0;
+    margin-top: 6px;
     line-height: 1.5;
   }
 `;
