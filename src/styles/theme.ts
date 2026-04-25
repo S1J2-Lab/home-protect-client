@@ -1,70 +1,50 @@
 export const theme = {
   colors: {
-    background: '#f6f7f9',
-    foreground: '#1b212d',
+    primary: '#3B82F6',
+    primaryDark: '#2563EB',
+    primaryLight: '#DBEAFE',
+    primarySoft: '#EFF6FF',
 
-    card: '#ffffff',
-    cardForeground: '#1b212d',
+    bg: '#F5F7FB',
+    surface: '#FFFFFF',
 
-    popover: '#ffffff',
-    popoverForeground: '#1b212d',
+    border: '#E5E9F0',
+    borderLight: '#EEF1F6',
 
-    primary: '#2057c5',
-    primaryForeground: '#ffffff',
+    text: '#0F172A',
+    textSub: '#475569',
+    textMuted: '#94A3B8',
 
-    secondary: '#f0f1f5',
-    secondaryForeground: '#303a50',
+    success: '#10B981',
+    successLight: '#D1FAE5',
+    successBg: '#ECFDF5',
 
-    muted: '#f0f2f4',
-    mutedForeground: '#6a7181',
+    danger: '#EF4444',
+    dangerLight: '#FEE2E2',
+    dangerBg: '#FEF2F2',
 
-    accent: '#e8ebf3',
-    accentForeground: '#2e426b',
-
-    destructive: '#cc3333',
-    destructiveForeground: '#ffffff',
-
-    border: '#e2e4e9',
-    input: '#e2e4e9',
-    ring: '#2057c5',
-
-    appBlue: '#2057c5',
-    appBlueDeep: '#193876',
-    appBlueLight: '#eff3fb',
-    appBlueMuted: '#d4dced',
-
-    statusWarning: '#dc2828',
-    statusWarningLight: '#fcf3f3',
-    statusSafe: '#3b9b7b',
-    statusSafeLight: '#eef7f4',
-    statusDanger: '#d43535',
-    statusDangerLight: '#faf0f0',
-
-    sidebarBackground: '#fafafa',
-    sidebarForeground: '#3f3f46',
-    sidebarPrimary: '#18181b',
-    sidebarPrimaryForeground: '#fafafa',
-    sidebarAccent: '#f4f4f5',
-    sidebarAccentForeground: '#18181b',
-    sidebarBorder: '#e5e7eb',
-    sidebarRing: '#3b82f6',
+    warning: '#F59E0B',
+    warningLight: '#FEF3C7',
+    warningBg: '#FFFBEB',
   },
 
   radius: {
-    md: '0.875rem',
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+    xl: '20px',
+    full: '999px',
   },
 
-  shadows: {
-    card: '0 2px 12px -2px rgba(36, 46, 66, 0.06)',
-    cardHover: '0 4px 20px -2px rgba(36, 46, 66, 0.1)',
+  shadow: {
+    card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.06)',
+    soft: '0 1px 2px rgba(15, 23, 42, 0.04)',
+    pop: '0 8px 24px rgba(59, 130, 246, 0.18)',
   },
 
-  gradients: {
-    hero: 'linear-gradient(160deg, #193876 0%, #2057c5 100%)',
-  },
-
-  fonts: {
-    body: "'Noto Sans KR', sans-serif",
+  font: {
+    family:
+      "'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif",
   },
 } as const;
 

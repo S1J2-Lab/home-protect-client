@@ -1,59 +1,74 @@
-import { css, keyframes } from '@emotion/react';
-import { theme } from './theme';
+import { Global, css, useTheme } from '@emotion/react';
 
-export const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+export function GlobalStyles() {
+  const theme = useTheme();
 
-export const pulseGentle = keyframes`
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-`;
+  return (
+    <Global
+      styles={css`
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          border-color: ${theme.colors.border};
+        }
 
-export const globalStyles = css`
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    border-color: ${theme.colors.border};
-  }
+        html,
+        body,
+        #root {
+          min-height: 100%;
+          margin: 0;
+          padding: 0;
+        }
 
-  html,
-  body,
-  #root {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-  }
+        body {
+          background-color: ${theme.colors.bg};
+          color: ${theme.colors.text};
+          font-family: ${theme.font.family};
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
 
-  body {
-    background: ${theme.colors.background};
-    color: ${theme.colors.foreground};
-    font-family: ${theme.fonts.body};
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+        button,
+        input,
+        textarea,
+        select {
+          font: inherit;
+        }
 
-  button,
-  input,
-  textarea,
-  select {
-    font: inherit;
-  }
+        button {
+          border: 0;
+          cursor: pointer;
+        }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-`;
+        input,
+        textarea,
+        select {
+          border: 1px solid ${theme.colors.border};
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        ul,
+        ol {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p {
+          margin: 0;
+        }
+      `}
+    />
+  );
+}

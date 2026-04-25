@@ -1,12 +1,12 @@
-import { Global, ThemeProvider } from '@emotion/react';
-import type { ReactNode } from 'react';
-import { globalStyles } from './globalStyles';
+import { ThemeProvider } from '@emotion/react';
+import type { PropsWithChildren } from 'react';
+import { GlobalStyles } from './globalStyles';
 import { theme } from './theme';
 
-export function AppStyleProvider({ children }: { children: ReactNode }) {
+export function AppStyleProvider({ children }: PropsWithChildren) {
   return (
     <ThemeProvider theme={theme}>
-      <Global styles={globalStyles} />
+      <GlobalStyles />
       {children}
     </ThemeProvider>
   );
