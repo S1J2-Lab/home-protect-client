@@ -31,13 +31,15 @@ dist-ssr
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+!.yarn/sdks
+!.yarn/sdks/**
 
 # [수정] SDK와 Unplugged 폴더를 무시하여 Diff 방지
 .yarn-cache/
 yarn-cache/
 .yarn/cache/
 .yarn/unplugged/
-.yarn/sdks/
+
 .yarn/build-state.yml
 .yarn/install-state.gz
 
