@@ -9,12 +9,26 @@ const ICON_ONLY_SIZE: Record<Size, string> = {
   lg: '40px',
 };
 
+const BORDER_RADIUS: Record<Size, string> = {
+  sm: '8px',
+  md: '10px',
+  lg: '12px',
+};
+
+const ICON_SIZE: Record<Size, string> = {
+  sm: '14px',
+  md: '16px',
+  lg: '18px',
+};
+
 type Variant = 'primary' | 'outline' | 'ghost' | 'dashed';
 type Size = 'sm' | 'md' | 'lg';
+type GhostTone = 'blue' | 'black' | 'red';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
+  tone?: GhostTone;
   iconStart?: ReactNode;
   iconEnd?: ReactNode;
   width?: CSSProperties['width'];
@@ -23,6 +37,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export function Button({
   variant = 'primary',
   size = 'md',
+  tone = 'blue',
   iconStart,
   iconEnd,
   width,
@@ -35,6 +50,7 @@ export function Button({
     <StyledButton
       $variant={variant}
       $size={size}
+      $tone={tone}
       $isIconOnly={isIconOnly}
       $width={width}
       {...rest}
@@ -46,13 +62,14 @@ export function Button({
   );
 }
 
-function getVariantStyle($variant: Variant, theme: Theme) {
+function getVariantStyle($variant: Variant, $tone: GhostTone, theme: Theme) {
   switch ($variant) {
     case 'primary':
       return css`
         background: ${theme.colors.primary};
         color: ${theme.colors.surface};
-        &:hover:not(:disabled) {
+        &:hover:not(:disabled),
+        &:active:not(:disabled) {
           background: ${theme.colors.primaryDark};
         }
         &:disabled {
@@ -64,25 +81,39 @@ function getVariantStyle($variant: Variant, theme: Theme) {
         background: ${theme.colors.surface};
         color: ${theme.colors.text};
         border: 1px solid ${theme.colors.border};
-        &:hover:not(:disabled) {
+        &:hover:not(:disabled),
+        &:active:not(:disabled) {
           background: ${theme.colors.bg};
         }
       `;
-    case 'ghost':
+    case 'ghost': {
+      const GHOST_TONE: Record<GhostTone, { color: string; hoverBg: string }> =
+        {
+          blue: {
+            color: theme.colors.primary,
+            hoverBg: theme.colors.primarySoft,
+          },
+          black: { color: theme.colors.textSub, hoverBg: theme.colors.bg },
+          red: { color: theme.colors.danger, hoverBg: theme.colors.dangerBg },
+        };
+      const { color, hoverBg } = GHOST_TONE[$tone];
       return css`
         background: transparent;
-        color: ${theme.colors.primary};
+        color: ${color};
         padding: 0;
-        &:hover:not(:disabled) {
-          color: ${theme.colors.primaryDark};
+        &:hover:not(:disabled),
+        &:active:not(:disabled) {
+          background: ${hoverBg};
         }
       `;
+    }
     case 'dashed':
       return css`
         background: ${theme.colors.primarySoft};
         color: ${theme.colors.primary};
         border: 1px dashed ${theme.colors.primary};
-        &:hover:not(:disabled) {
+        &:hover:not(:disabled),
+        &:active:not(:disabled) {
           background: ${theme.colors.primaryLight};
         }
       `;
@@ -97,6 +128,11 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
       height: ${dimension};
       padding: 0;
       flex-shrink: 0;
+      border-radius: ${BORDER_RADIUS[$size]};
+      svg {
+        width: ${ICON_SIZE[$size]};
+        height: ${ICON_SIZE[$size]};
+      }
     `;
   }
 
@@ -105,22 +141,34 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
       return css`
         padding: 6px 10px;
         font-size: 12px;
-        border-radius: 8px;
+        border-radius: ${BORDER_RADIUS.sm};
         gap: 4px;
+        svg {
+          width: ${ICON_SIZE.sm};
+          height: ${ICON_SIZE.sm};
+        }
       `;
     case 'md':
       return css`
         padding: 8px 12px;
         font-size: 12px;
-        border-radius: 10px;
+        border-radius: ${BORDER_RADIUS.md};
         gap: 6px;
+        svg {
+          width: ${ICON_SIZE.md};
+          height: ${ICON_SIZE.md};
+        }
       `;
     case 'lg':
       return css`
         padding: 14px 20px;
         font-size: 15px;
-        border-radius: 12px;
+        border-radius: ${BORDER_RADIUS.lg};
         gap: 6px;
+        svg {
+          width: ${ICON_SIZE.lg};
+          height: ${ICON_SIZE.lg};
+        }
       `;
   }
 }
@@ -128,6 +176,7 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
 const StyledButton = styled.button<{
   $variant: Variant;
   $size: Size;
+  $tone: GhostTone;
   $isIconOnly: boolean;
   $width?: CSSProperties['width'];
 }>`
@@ -144,7 +193,7 @@ const StyledButton = styled.button<{
     cursor: not-allowed;
   }
 
-  ${({ $variant, theme }) => getVariantStyle($variant, theme)}
+  ${({ $variant, $tone, theme }) => getVariantStyle($variant, $tone, theme)}
   ${({ $size, $isIconOnly }) => getSizeStyle($size, $isIconOnly)}
   ${({ $width }) =>
     $width &&
