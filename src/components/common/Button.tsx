@@ -29,6 +29,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({
+  type = 'button',
   variant = 'primary',
   size = 'md',
   tone = 'blue',
@@ -42,6 +43,7 @@ export function Button({
 
   return (
     <StyledButton
+      type={type}
       $variant={variant}
       $size={size}
       $tone={tone}
@@ -195,8 +197,8 @@ const StyledButton = styled.button<{
   ${({ $variant, $tone, theme }) => getVariantStyle($variant, $tone, theme)}
   ${({ $size, $isIconOnly, theme }) => getSizeStyle($size, $isIconOnly, theme)}
   ${({ $width }) =>
-    $width &&
+    $width != null &&
     css`
-      width: ${$width};
+      width: ${typeof $width === 'number' ? `${$width}px` : $width};
     `}
 `;
