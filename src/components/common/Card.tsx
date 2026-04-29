@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import type { HTMLAttributes } from 'react';
-import { theme } from '../../styles/theme';
 
 const CARD_PADDING = '20px';
 const CARD_GAP = '6px';
@@ -10,9 +9,9 @@ export function Card({ children, ...rest }: HTMLAttributes<HTMLDivElement>) {
 }
 
 const CardContainer = styled.div`
-  background: ${theme.colors.surface};
-  border-radius: ${theme.radius.lg};
-  box-shadow: ${theme.shadow.card};
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  box-shadow: ${({ theme }) => theme.shadow.card};
   padding: ${CARD_PADDING};
   display: flex;
   flex-direction: column;
