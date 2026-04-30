@@ -47,3 +47,7 @@ yarn-cache/
 .env
 .env.*
 !.env.example
+
+# 개인 설정
+CLAUDE.md
+docs/
