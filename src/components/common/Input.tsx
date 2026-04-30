@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import type { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
-import { theme } from '../../styles/theme';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   start?: ReactNode;
@@ -64,7 +63,7 @@ const Slot = styled.span<{
   position: absolute;
   display: flex;
   align-items: center;
-  color: ${theme.colors.textMuted};
+  color: ${({ theme }) => theme.colors.textMuted};
   font-size: 14px;
   font-weight: 500;
   pointer-events: ${({ $interactive, $disabled }) =>
@@ -75,8 +74,8 @@ const Slot = styled.span<{
 
 const StyledInput = styled.input<{ $hasStart: boolean; $hasEnd: boolean }>`
   width: 100%;
-  background: ${theme.colors.bg};
-  border-radius: ${theme.radius.md};
+  background: ${({ theme }) => theme.colors.bg};
+  border-radius: ${({ theme }) => theme.radius.md};
   font-size: 14px;
   outline: none;
   transition:
@@ -87,12 +86,12 @@ const StyledInput = styled.input<{ $hasStart: boolean; $hasEnd: boolean }>`
     ${({ $hasStart }) => ($hasStart ? '40px' : '14px')};
 
   &:focus {
-    border-color: ${theme.colors.primary};
-    background: ${theme.colors.surface};
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.surface};
   }
 
   &::placeholder {
-    color: ${theme.colors.textMuted};
+    color: ${({ theme }) => theme.colors.textMuted};
   }
 
   &:disabled {
