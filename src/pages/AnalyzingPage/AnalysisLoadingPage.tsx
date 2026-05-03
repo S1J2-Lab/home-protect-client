@@ -57,5 +57,5 @@ const PageWrapper = styled.main`
 const Content = styled.div`
   width: 100%;
   max-width: 420px;
-  padding: 24px 12px 28px;
+  padding: 24px 4px 28px;
 `;

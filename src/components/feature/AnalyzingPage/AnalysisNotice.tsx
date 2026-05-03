@@ -16,7 +16,7 @@ const NoticeBox = styled.div`
   margin-top: 20px;
   padding: 16px;
   border-radius: ${({ theme }) => theme.radius.md};
-  background-color: ${({ theme }) => theme.colors.primaryLight};
+  background-color: ${({ theme }) => theme.colors.primarySoft};
   color: ${({ theme }) => theme.colors.primary};
 
   p {
