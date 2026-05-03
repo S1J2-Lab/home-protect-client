@@ -8,12 +8,14 @@ interface DatePickerInputProps {
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
   placeholder?: string;
+  minDate?: Date | null;
 }
 
 export function DatePickerInput({
   selectedDate,
   onChange,
   placeholder = '연도-월-일',
+  minDate,
 }: DatePickerInputProps) {
   return (
     <Wrapper>
@@ -22,6 +24,7 @@ export function DatePickerInput({
         onChange={onChange}
         placeholderText={placeholder}
         dateFormat="yyyy-MM-dd"
+        minDate={minDate ?? undefined}
         customInput={
           <InputButton type="button" $isEmpty={!selectedDate}>
             {selectedDate ? format(selectedDate, 'yyyy-MM-dd') : placeholder}

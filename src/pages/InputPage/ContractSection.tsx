@@ -11,7 +11,13 @@ export function ContractSection() {
   const [deposit, setDeposit] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
 
+    if (date && endDate && endDate < date) {
+      setEndDate(null);
+    }
+  };
   return (
     <Card>
       <SectionTitle>계약 정보</SectionTitle>
@@ -39,7 +45,7 @@ export function ContractSection() {
         <DateRow>
           <DatePickerInput
             selectedDate={startDate}
-            onChange={setStartDate}
+            onChange={handleStartDateChange}
             placeholder="연도-월-일"
           />
 
@@ -49,6 +55,7 @@ export function ContractSection() {
             selectedDate={endDate}
             onChange={setEndDate}
             placeholder="연도-월-일"
+            minDate={startDate}
           />
         </DateRow>
       </FieldGroup>

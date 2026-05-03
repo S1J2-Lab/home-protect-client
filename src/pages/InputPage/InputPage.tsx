@@ -4,7 +4,7 @@ import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
 import { ContractSection } from './ContractSection';
 
-const INPUT_STEPS = ['address', 'contract', 'document', 'confirm'] as const;
+const INPUT_STEPS = ['address', 'contract'] as const;
 
 export function InputPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
