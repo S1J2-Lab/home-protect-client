@@ -11,18 +11,6 @@ export function useAnalysisProgress() {
     setSteps(INITIAL_ANALYSIS_STEPS);
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        const next = Math.min(prev + 2, 100);
-        updateStepStatus(next);
-        return next;
-      });
-    }, 120);
-
-    return () => clearInterval(timer);
-  }, []);
-
   function updateStepStatus(nextProgress: number) {
     setSteps((prevSteps) =>
       prevSteps.map((step, index) => {
@@ -40,6 +28,23 @@ export function useAnalysisProgress() {
       }),
     );
   }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          return 100;
+        }
+
+        const next = Math.min(prev + 2, 100);
+        updateStepStatus(next);
+        return next;
+      });
+    }, 120);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return {
     progress,

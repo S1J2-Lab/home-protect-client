@@ -5,11 +5,12 @@ interface CircularProgressProps {
 }
 
 export function CircularProgress({ value }: CircularProgressProps) {
+  const safeValue = Math.min(Math.max(value, 0), 100);
   const radius = 48;
   const stroke = 10;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  const strokeDashoffset = circumference - (value / 100) * circumference;
+  const strokeDashoffset = circumference - (safeValue / 100) * circumference;
 
   return (
     <ProgressWrapper>
@@ -29,7 +30,7 @@ export function CircularProgress({ value }: CircularProgressProps) {
           cy={radius}
         />
       </svg>
-      <ProgressText>{value}%</ProgressText>
+      <ProgressText>{safeValue}%</ProgressText>
     </ProgressWrapper>
   );
 }

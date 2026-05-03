@@ -31,4 +31,6 @@ const StepList = styled.ul`
   flex-direction: column;
   gap: 25px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 `;
