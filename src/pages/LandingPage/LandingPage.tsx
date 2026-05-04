@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import { HeroSection } from '../../components/feature/LandingPage/HeroSection';
 import { FeatureSection } from '../../components/feature/LandingPage/FeatureSection/FeatureSection';
+import { StepSection } from '../../components/feature/LandingPage/StepSection/StepSection';
 
 export function LandingPage() {
   return (
     <PageWrapper>
       <HeroSection />
       <FeatureSection />
+      <StepSection />
     </PageWrapper>
   );
 }
