@@ -5,9 +5,9 @@ import type {
   AnalysisErrorCode,
   AnalysisPageStatus,
 } from '../../types/analysis';
-import { AnalysisErrorView } from '../../components/feature/AnalyzingPage/AnalysisErrorView';
+import { AnalysisLoadingView } from './AnalysisLoadingView';
+import { AnalysisErrorView } from './AnalysisErrorView';
 import { useEffect, useState } from 'react';
-import { AnalysisLoadingView } from '../../components/feature/AnalyzingPage/AnalysisLoadingView';
 
 export function AnalysisLoadingPage() {
   const { progress, steps, isCompleted, resetProgress } = useAnalysisProgress();
