@@ -20,7 +20,6 @@ export function HeroSection() {
 }
 
 const Section = styled.section`
-  background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
   text-align: center;
   width: 100%;
   max-width: 420px;
