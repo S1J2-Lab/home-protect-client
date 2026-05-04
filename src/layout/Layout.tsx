@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Outlet } from 'react-router-dom';
 import type { ReactNode } from 'react';
 
 type ContentBackground = 'surface' | 'bg';
@@ -7,22 +8,25 @@ interface LayoutProps {
   header?: ReactNode;
   stepIndicator?: ReactNode;
   contentBackground?: ContentBackground;
-  children: ReactNode;
+  noPadding?: boolean;
 }
 
 export function Layout({
   header,
   stepIndicator,
   contentBackground = 'bg',
-  children,
+  noPadding = false,
 }: LayoutProps) {
   return (
     <Wrapper>
       <LayoutWrapper>
         {header}
         {stepIndicator}
-        <PageContent $contentBackground={contentBackground}>
-          {children}
+        <PageContent
+          $contentBackground={contentBackground}
+          $noPadding={noPadding}
+        >
+          <Outlet />
         </PageContent>
       </LayoutWrapper>
     </Wrapper>
@@ -48,9 +52,12 @@ const LayoutWrapper = styled.main`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-const PageContent = styled.div<{ $contentBackground: ContentBackground }>`
+const PageContent = styled.div<{
+  $contentBackground: ContentBackground;
+  $noPadding: boolean;
+}>`
   flex: 1;
-  padding: 24px 20px;
+  padding: ${({ $noPadding }) => ($noPadding ? '0' : '24px 20px')};
   background-color: ${({ theme, $contentBackground }) =>
     theme.colors[$contentBackground]};
 `;

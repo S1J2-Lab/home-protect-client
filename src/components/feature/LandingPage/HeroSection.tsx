@@ -20,7 +20,6 @@ export function HeroSection() {
 }
 
 const Section = styled.section`
-  padding: 32px 20px 36px;
   background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
   text-align: center;
   width: 100%;

@@ -10,7 +10,6 @@ export function LandingPage() {
 }
 
 const PageWrapper = styled.main`
-  min-height: 100dvh;
-  display: flex;
-  justify-content: center;
+  padding: 32px 20px 36px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
 `;

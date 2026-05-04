@@ -37,25 +37,15 @@ export function AnalysisLoadingPage() {
 
   return (
     <PageWrapper>
-      <Content>
-        {pageStatus === 'error' ? (
-          <AnalysisErrorView errorCode={errorCode} onRetry={handleRetry} />
-        ) : (
-          <AnalysisLoadingView progress={progress} steps={steps} />
-        )}
-      </Content>
+      {pageStatus === 'error' ? (
+        <AnalysisErrorView errorCode={errorCode} onRetry={handleRetry} />
+      ) : (
+        <AnalysisLoadingView progress={progress} steps={steps} />
+      )}
     </PageWrapper>
   );
 }
 
 const PageWrapper = styled.main`
-  min-height: 100dvh;
-  display: flex;
-  justify-content: center;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 420px;
-  padding: 24px 4px 28px;
+  padding: 32px 20px 36px;
 `;

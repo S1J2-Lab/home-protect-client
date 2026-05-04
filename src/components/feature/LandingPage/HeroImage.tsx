@@ -19,7 +19,7 @@ const ImageWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 8px 0 24px;
+  margin: 8px 0 32px;
 
   &::before {
     content: '';
