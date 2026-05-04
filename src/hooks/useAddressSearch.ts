@@ -51,6 +51,7 @@ export function useAddressSearch() {
   const hasNextPage = visibleCount < MOCK_ADDRESSES.length;
 
   const handleSearch = () => {
+    if (keyword.trim().length === 0) return;
     setIsSearched(true);
     setVisibleCount(ADDRESS_PAGE_SIZE);
   };

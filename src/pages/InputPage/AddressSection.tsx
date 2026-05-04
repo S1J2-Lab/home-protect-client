@@ -4,8 +4,17 @@ import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
 import { useAddressSearch } from '../../hooks/useAddressSearch';
 import { useEffect, useRef } from 'react';
+import type { Address } from '../../types/address';
 
-export function AddressSection() {
+interface AddressSectionProps {
+  selectedAddress: Address | null;
+  onSelect: (address: Address) => void;
+}
+
+export function AddressSection({
+  selectedAddress,
+  onSelect,
+}: AddressSectionProps) {
   const {
     keyword,
     setKeyword,
@@ -18,6 +27,11 @@ export function AddressSection() {
 
   const resultAreaRef = useRef<HTMLDivElement | null>(null);
   const observerTargetRef = useRef<HTMLDivElement | null>(null);
+
+  const handleSelectAddress = (address: Address) => {
+    onSelect(address);
+    setKeyword(address.road);
+  };
 
   useEffect(() => {
     if (!isSearched || !hasNextPage) return;
@@ -77,12 +91,23 @@ export function AddressSection() {
 
       {isSearched && (
         <AddressResultArea ref={resultAreaRef}>
-          {currentAddresses.map((address) => (
-            <AddressItem key={address.road} type="button">
-              <RoadAddress>{address.road}</RoadAddress>
-              <JibunAddress>(지번 주소) {address.jibun}</JibunAddress>
-            </AddressItem>
-          ))}
+          {currentAddresses.map((address) => {
+            const isSelected =
+              selectedAddress?.road === address.road &&
+              selectedAddress?.jibun === address.jibun;
+
+            return (
+              <AddressItem
+                key={`${address.road}-${address.jibun}`}
+                type="button"
+                $isSelected={isSelected}
+                onClick={() => handleSelectAddress(address)}
+              >
+                <RoadAddress>{address.road}</RoadAddress>
+                <JibunAddress>(지번 주소) {address.jibun}</JibunAddress>
+              </AddressItem>
+            );
+          })}
 
           {hasNextPage && <ObserverTarget ref={observerTargetRef} />}
         </AddressResultArea>
@@ -118,7 +143,7 @@ const AddressResultArea = styled.div`
   scrollbar-gutter: stable;
 `;
 
-const AddressItem = styled.button`
+const AddressItem = styled.button<{ $isSelected: boolean }>`
   width: 100%;
   text-align: left;
   background: ${({ theme }) => theme.colors.bg};

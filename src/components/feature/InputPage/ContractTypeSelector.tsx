@@ -19,6 +19,7 @@ export function ContractTypeSelector({
           type="button"
           $isActive={value === type.value}
           onClick={() => onChange(type.value)}
+          aria-pressed={value === type.value}
         >
           {type.label}
         </TypeButton>

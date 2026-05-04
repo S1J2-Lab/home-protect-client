@@ -3,14 +3,20 @@ import { useState } from 'react';
 import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
 import { ContractSection } from './ContractSection';
+import type { ContractType } from '../../constants/contract';
+import type { Address } from '../../types/address';
 
 const INPUT_STEPS = ['address', 'contract'] as const;
 
 export function InputPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [contractType, setContractType] = useState<ContractType>('jeonse');
+  const [deposit, setDeposit] = useState('');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const currentStep = INPUT_STEPS[currentStepIndex];
-
+  const isAddressStepNextDisabled = selectedAddress === null;
   const handleNext = () => {
     setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
   };
@@ -23,7 +29,10 @@ export function InputPage() {
     <PageWrapper>
       {currentStep === 'address' && (
         <>
-          <AddressSection />
+          <AddressSection
+            selectedAddress={selectedAddress}
+            onSelect={setSelectedAddress}
+          />
 
           <ButtonArea>
             <Button
@@ -31,6 +40,7 @@ export function InputPage() {
               size="lg"
               width="100%"
               onClick={handleNext}
+              disabled={isAddressStepNextDisabled}
             >
               다음
             </Button>
@@ -40,7 +50,16 @@ export function InputPage() {
 
       {currentStep === 'contract' && (
         <>
-          <ContractSection />
+          <ContractSection
+            contractType={contractType}
+            onContractTypeChange={setContractType}
+            deposit={deposit}
+            onDepositChange={setDeposit}
+            startDate={startDate}
+            onStartDateChange={setStartDate}
+            endDate={endDate}
+            onEndDateChange={setEndDate}
+          />
 
           <ButtonArea>
             <Button

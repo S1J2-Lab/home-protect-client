@@ -1,30 +1,49 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
 import { ContractTypeSelector } from '../../components/feature/InputPage/ContractTypeSelector';
 import { DatePickerInput } from '../../components/feature/InputPage/DatePickerInput';
 import type { ContractType } from '../../constants/contract';
 
-export function ContractSection() {
-  const [contractType, setContractType] = useState<ContractType>('jeonse');
-  const [deposit, setDeposit] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+interface ContractSectionProps {
+  contractType: ContractType;
+  onContractTypeChange: (contractType: ContractType) => void;
+  deposit: string;
+  onDepositChange: (deposit: string) => void;
+  startDate: Date | null;
+  onStartDateChange: (date: Date | null) => void;
+  endDate: Date | null;
+  onEndDateChange: (date: Date | null) => void;
+}
+
+export function ContractSection({
+  contractType,
+  onContractTypeChange,
+  deposit,
+  onDepositChange,
+  startDate,
+  onStartDateChange,
+  endDate,
+  onEndDateChange,
+}: ContractSectionProps) {
   const handleStartDateChange = (date: Date | null) => {
-    setStartDate(date);
+    onStartDateChange(date);
 
     if (date && endDate && endDate < date) {
-      setEndDate(null);
+      onEndDateChange(null);
     }
   };
+
   return (
     <Card>
       <SectionTitle>계약 정보</SectionTitle>
 
       <FieldGroup>
         <Label>계약 유형</Label>
-        <ContractTypeSelector value={contractType} onChange={setContractType} />
+        <ContractTypeSelector
+          value={contractType}
+          onChange={onContractTypeChange}
+        />
       </FieldGroup>
 
       <FieldGroup>
@@ -32,7 +51,7 @@ export function ContractSection() {
         <Input
           id="deposit"
           value={deposit}
-          onChange={(event) => setDeposit(event.target.value)}
+          onChange={(event) => onDepositChange(event.target.value)}
           inputMode="numeric"
           placeholder="보증금을 입력해주세요"
           start={<span>₩</span>}
@@ -54,7 +73,7 @@ export function ContractSection() {
 
           <DatePickerInput
             selectedDate={endDate}
-            onChange={setEndDate}
+            onChange={onEndDateChange}
             placeholder="연도-월-일"
             minDate={startDate}
           />
