@@ -1,7 +1,12 @@
 import styled from '@emotion/styled';
 import type { ReactNode } from 'react';
 
+type ContentBackground = 'surface' | 'bg';
+
 interface LayoutProps {
+  header?: ReactNode;
+  stepIndicator?: ReactNode;
+  contentBackground?: ContentBackground;
   children: ReactNode;
 }
 
