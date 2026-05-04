@@ -41,11 +41,6 @@ export const theme = {
     soft: '0 1px 2px rgba(15, 23, 42, 0.04)',
     pop: '0 8px 24px rgba(59, 130, 246, 0.18)',
   },
-
-  font: {
-    family:
-      "'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif",
-  },
 } as const;
 
 export type AppTheme = typeof theme;

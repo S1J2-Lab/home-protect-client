@@ -24,7 +24,6 @@ export function GlobalStyles() {
         body {
           background-color: ${theme.colors.bg};
           color: ${theme.colors.text};
-          font-family: ${theme.font.family};
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }

@@ -3,6 +3,7 @@ import { Button } from './components/common/Button';
 import { Header } from './components/common/Header';
 import { Layout } from './layout/Layout';
 import { StepIndicator } from './components/common/StepIndicator';
+import { AppRouter } from './routes/AppRouter';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
       }
       stepIndicator={<StepIndicator currentStep={1} totalSteps={4} />}
     >
-      <div>레이아웃 테스트</div>
+      {/* <div>레이아웃 테스트</div> */}
+      <AppRouter />
     </Layout>
   );
 }
