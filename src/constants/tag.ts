@@ -1,6 +1,10 @@
-export type TagVariant = 'success' | 'warning' | 'danger';
+export type TagVariant = 'primary' | 'success' | 'warning' | 'danger';
 
 export const TAG_COLORS = {
+  primary: {
+    color: 'primaryDark',
+    background: 'primaryLight',
+  },
   success: {
     color: 'success',
     background: 'successBg',
