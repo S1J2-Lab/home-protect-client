@@ -13,7 +13,9 @@ export function GlobalStyles() {
           border-color: ${theme.colors.border};
         }
 
-        html,
+        html {
+          scrollbar-gutter: stable;
+        }
         body,
         #root {
           min-height: 100%;

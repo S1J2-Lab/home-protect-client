@@ -1,11 +1,11 @@
-export type TagVariant = 'success' | 'warning' | 'danger';
+export type TagVariant = 'safe' | 'caution' | 'danger';
 
 export const TAG_COLORS = {
-  success: {
+  safe: {
     color: 'success',
     background: 'successBg',
   },
-  warning: {
+  caution: {
     color: 'warning',
     background: 'warningBg',
   },
