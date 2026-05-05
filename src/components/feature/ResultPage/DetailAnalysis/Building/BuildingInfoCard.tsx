@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { AlertCircle, Building2, CheckCircle2 } from 'lucide-react';
 import { AnalysisCard } from '../../../../common/AnalysisCard';
-import type { BuildingData } from '../../../../../types/analysis';
+import type { BuildingData } from '../../../../../types/result';
 import { getBuildingInfoItems } from '../../../../../utils/buildingInfo';
 
 interface BuildingInfoCardProps {

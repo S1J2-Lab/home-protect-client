@@ -10,36 +10,52 @@ interface ChecklistItemProps {
 
 export function ChecklistItem({ item, checked, onToggle }: ChecklistItemProps) {
   return (
-    <Item checked={checked} onClick={() => onToggle(item.id)}>
-      <HiddenCheckbox type="checkbox" checked={checked} readOnly />
+    <Item checked={checked}>
+      <ToggleButton
+        type="button"
+        role="checkbox"
+        aria-checked={checked}
+        tabIndex={0}
+        onClick={() => onToggle(item.id)}
+      >
+        <CustomCheckbox checked={checked} aria-hidden="true">
+          {checked && <Check size={12} strokeWidth={2} />}
+        </CustomCheckbox>
 
-      <CustomCheckbox checked={checked}>
-        {checked && <Check size={12} strokeWidth={2} />}
-      </CustomCheckbox>
-
-      <Content>
-        <Title>{item.title}</Title>
-        <Description>{item.description}</Description>
-      </Content>
+        <Content>
+          <Title>{item.title}</Title>
+          <Description>{item.description}</Description>
+        </Content>
+      </ToggleButton>
     </Item>
   );
 }
 
 const Item = styled.li<{ checked: boolean }>`
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 10px;
-  padding: 16px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  cursor: pointer;
   opacity: ${({ checked }) => (checked ? 0.75 : 1)};
+
   &:last-child {
     border-bottom: 0;
   }
 `;
 
-const HiddenCheckbox = styled.input`
-  display: none;
+const ToggleButton = styled.button`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  padding: 16px 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 `;
 
 const CustomCheckbox = styled.span<{ checked: boolean }>`

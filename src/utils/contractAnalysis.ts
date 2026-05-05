@@ -1,4 +1,4 @@
-import type { AnalysisIssueItem } from '../types/analysis';
+import type { AnalysisIssueItem } from '../types/result';
 import type { ContractClause, ContractData } from '../types/contract';
 
 function getContractIssueLabel(level: ContractClause['level']) {

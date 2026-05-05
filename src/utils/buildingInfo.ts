@@ -1,4 +1,4 @@
-import type { BuildingData } from '../types/analysis';
+import type { BuildingData } from '../types/result';
 
 interface BuildingInfoItem {
   id: string;
@@ -39,6 +39,12 @@ export function getBuildingInfoItems(
   return infoItems;
 }
 
-function formatDate(date: string) {
+function formatDate(date?: string) {
+  if (!date) return '-';
+
+  const isValidDateFormat = /^\d{4}-\d{2}-\d{2}$/.test(date);
+
+  if (!isValidDateFormat) return date;
+
   return date.replaceAll('-', '.');
 }

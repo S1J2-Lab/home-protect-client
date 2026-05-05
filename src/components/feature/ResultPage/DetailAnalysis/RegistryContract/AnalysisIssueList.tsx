@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { AnalysisIssueCard } from './AnalysisIssueCard';
-import type { AnalysisIssueItem } from '../../../../../types/analysis';
+import type { AnalysisIssueItem } from '../../../../../types/result';
 
 interface AnalysisIssueListProps {
   items: AnalysisIssueItem[];

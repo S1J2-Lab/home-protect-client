@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Tag } from '../../../../common/Tag';
-import type { AnalysisIssueItem } from '../../../../../types/analysis';
+import type { AnalysisIssueItem } from '../../../../../types/result';
 
 interface AnalysisIssueCardProps {
   order: number;

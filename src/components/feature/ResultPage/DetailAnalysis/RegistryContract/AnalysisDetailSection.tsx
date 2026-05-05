@@ -4,7 +4,7 @@ import { AnalysisIssueList } from './AnalysisIssueList';
 import type {
   AnalysisIssueItem,
   IssueDirection,
-} from '../../../../../types/analysis';
+} from '../../../../../types/result';
 
 const INITIAL_VISIBLE_COUNT = 5;
 const LOAD_MORE_COUNT = 5;

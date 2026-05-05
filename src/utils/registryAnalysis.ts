@@ -1,4 +1,4 @@
-import type { AnalysisIssueItem } from '../types/analysis';
+import type { AnalysisIssueItem } from '../types/result';
 import { getRegistrySummaryItems, type RegistryData } from './registrySummary';
 
 export function getRegistryAnalysisIssues(
@@ -8,8 +8,8 @@ export function getRegistryAnalysisIssues(
     getRegistrySummaryItems(registry);
 
   return [
-    ...dangerItems.map((item) => ({
-      id: `danger-${item.title}`,
+    ...dangerItems.map((item, index) => ({
+      id: `danger-${index}-${item.title}`,
       title: item.title,
       label: '주의 필요',
       variant: 'danger' as const,
@@ -18,8 +18,8 @@ export function getRegistryAnalysisIssues(
         { label: '대응책', content: item.action },
       ],
     })),
-    ...cautionItems.map((item) => ({
-      id: `caution-${item.title}`,
+    ...cautionItems.map((item, index) => ({
+      id: `caution-${index}-${item.title}`,
       title: item.title,
       label: '확인 필요',
       variant: 'caution' as const,
@@ -28,8 +28,8 @@ export function getRegistryAnalysisIssues(
         { label: '대응책', content: item.action },
       ],
     })),
-    ...safeItems.map((item) => ({
-      id: `safe-${item.title}`,
+    ...safeItems.map((item, index) => ({
+      id: `safe-${index}-${item.title}`,
       title: item.title,
       label: '정상',
       variant: 'safe' as const,

@@ -9,8 +9,10 @@ export function ChecklistProgress({
   checkedCount,
   totalCount,
 }: ChecklistProgressProps) {
-  const progressPercent =
+  const calculatedPercent =
     totalCount === 0 ? 0 : Math.round((checkedCount / totalCount) * 100);
+
+  const progressPercent = Math.min(Math.max(calculatedPercent, 0), 100);
 
   return (
     <ProgressBox>

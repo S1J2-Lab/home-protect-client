@@ -26,7 +26,8 @@ export function JeonseRatioCard({
   averagePrice,
   lowestPrice,
 }: JeonseRatioCardProps) {
-  const notice = getRatioNotice(ratio);
+  const safeRatio = Math.min(Math.max(ratio, 0), 100);
+  const notice = getRatioNotice(safeRatio);
 
   return (
     <AnalysisCard
@@ -35,8 +36,8 @@ export function JeonseRatioCard({
       right={<Tag variant={riskLevel}>{getRiskLevelLabel(riskLevel)}</Tag>}
     >
       <Body>
-        <RatioCircle ratio={ratio} variant={riskLevel}>
-          <RatioText>{ratio}%</RatioText>
+        <RatioCircle ratio={safeRatio} variant={riskLevel}>
+          <RatioText>{safeRatio}%</RatioText>
         </RatioCircle>
 
         <PriceList>
