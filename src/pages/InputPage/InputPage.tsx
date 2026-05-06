@@ -3,10 +3,21 @@ import { useState } from 'react';
 import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
 import { ContractSection } from './ContractSection';
+import { UploadSection } from './UploadSection';
 import type { ContractType } from '../../constants/contract';
 import type { Address } from '../../types/address';
+import type {
+  FileMap,
+  UploadedFile,
+  UploaderKey,
+} from '../../constants/uploadedFile';
 
-const INPUT_STEPS = ['address', 'contract'] as const;
+const INPUT_STEPS = ['address', 'contract', 'upload'] as const;
+
+const INITIAL_FILES: FileMap = {
+  registry: [],
+  contract: [],
+};
 
 export function InputPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -15,14 +26,28 @@ export function InputPage() {
   const [deposit, setDeposit] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [files, setFiles] = useState<FileMap>(INITIAL_FILES);
+  const [isMaskingConfirmed, setIsMaskingConfirmed] = useState(false);
+
   const currentStep = INPUT_STEPS[currentStepIndex];
+
   const isAddressStepNextDisabled = selectedAddress === null;
+
+  const hasWarningFiles = Object.values(files).some((list) =>
+    list.some((f) => f.status === 'warning'),
+  );
+  const isUploadStepNextDisabled = hasWarningFiles && !isMaskingConfirmed;
+
   const handleNext = () => {
     setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
   };
 
   const handlePrev = () => {
     setCurrentStepIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleFilesChange = (key: UploaderKey, next: UploadedFile[]) => {
+    setFiles((prev) => ({ ...prev, [key]: next }));
   };
 
   return (
@@ -76,6 +101,38 @@ export function InputPage() {
               size="lg"
               width="100%"
               onClick={handleNext}
+            >
+              다음
+            </Button>
+          </ButtonArea>
+        </>
+      )}
+
+      {currentStep === 'upload' && (
+        <>
+          <UploadSection
+            files={files}
+            onFilesChange={handleFilesChange}
+            isMaskingConfirmed={isMaskingConfirmed}
+            onMaskingConfirmChange={setIsMaskingConfirmed}
+          />
+
+          <ButtonArea>
+            <Button
+              variant="outline"
+              size="lg"
+              width="100%"
+              onClick={handlePrev}
+            >
+              이전
+            </Button>
+
+            <Button
+              variant="primary"
+              size="lg"
+              width="100%"
+              onClick={handleNext}
+              disabled={isUploadStepNextDisabled}
             >
               다음
             </Button>
