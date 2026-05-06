@@ -1,9 +1,24 @@
 import { useCallback, useState } from 'react';
+import { type AxiosError } from 'axios';
 import { searchAddress } from '../api/address';
 import type { Address } from '../types/address';
 
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
+
+interface AddressErrorResponse {
+  status: 'error';
+  error: {
+    code: string;
+    message: string;
+  };
+}
+
+const getAddressErrorMessage = (error: unknown) => {
+  const axiosError = error as AxiosError<AddressErrorResponse>;
+
+  return axiosError.response!.data.error.message;
+};
 
 export function useAddressSearch() {
   const [keyword, setKeyword] = useState('');
@@ -34,10 +49,10 @@ export function useAddressSearch() {
       setCurrentAddresses(addresses);
       setCurrentPage(FIRST_PAGE);
       setHasNextPage(addresses.length === PAGE_SIZE);
-    } catch {
+    } catch (error) {
       setCurrentAddresses([]);
       setHasNextPage(false);
-      setErrorMessage('주소 검색에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      setErrorMessage(getAddressErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +72,8 @@ export function useAddressSearch() {
       setCurrentAddresses((prev) => [...prev, ...addresses]);
       setCurrentPage(nextPage);
       setHasNextPage(addresses.length === PAGE_SIZE);
-    } catch {
-      setErrorMessage('주소를 더 불러오지 못했어요.');
+    } catch (error) {
+      setErrorMessage(getAddressErrorMessage(error));
     } finally {
       setIsFetchingMore(false);
     }
