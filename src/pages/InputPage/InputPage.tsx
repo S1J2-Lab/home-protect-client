@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
 import { ContractSection } from './ContractSection';
@@ -20,6 +21,7 @@ const INITIAL_FILES: FileMap = {
 };
 
 export function InputPage() {
+  const navigate = useNavigate();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [contractType, setContractType] = useState<ContractType>('jeonse');
@@ -28,6 +30,7 @@ export function InputPage() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [files, setFiles] = useState<FileMap>(INITIAL_FILES);
   const [isMaskingConfirmed, setIsMaskingConfirmed] = useState(false);
+  const [isOwnerVerifyConfirmed, setIsOwnerVerifyConfirmed] = useState(false);
 
   const currentStep = INPUT_STEPS[currentStepIndex];
 
@@ -36,9 +39,14 @@ export function InputPage() {
   const hasWarningFiles = Object.values(files).some((list) =>
     list.some((f) => f.status === 'warning'),
   );
-  const isUploadStepNextDisabled = hasWarningFiles && !isMaskingConfirmed;
+  const isUploadStepNextDisabled =
+    (hasWarningFiles && !isMaskingConfirmed) || !isOwnerVerifyConfirmed;
 
   const handleNext = () => {
+    if (currentStep === 'upload') {
+      navigate('/analyze');
+      return;
+    }
     setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
   };
 
@@ -47,6 +55,7 @@ export function InputPage() {
   };
 
   const handleFilesChange = (key: UploaderKey, next: UploadedFile[]) => {
+    if (next.length > files[key].length) setIsMaskingConfirmed(false);
     setFiles((prev) => ({ ...prev, [key]: next }));
   };
 
@@ -115,6 +124,8 @@ export function InputPage() {
             onFilesChange={handleFilesChange}
             isMaskingConfirmed={isMaskingConfirmed}
             onMaskingConfirmChange={setIsMaskingConfirmed}
+            isOwnerVerifyConfirmed={isOwnerVerifyConfirmed}
+            onOwnerVerifyConfirmChange={setIsOwnerVerifyConfirmed}
           />
 
           <ButtonArea>
@@ -134,7 +145,7 @@ export function InputPage() {
               onClick={handleNext}
               disabled={isUploadStepNextDisabled}
             >
-              다음
+              다음: 분석 시작하기
             </Button>
           </ButtonArea>
         </>

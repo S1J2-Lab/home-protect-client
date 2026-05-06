@@ -1,23 +1,23 @@
 import styled from '@emotion/styled';
-import { CircleAlert } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 
 const ICON_SIZE = 16;
-const ICON_STROKE_WIDTH = 2.2;
+const ICON_STROKE_WIDTH = 2.4;
 
-export function PrivacyMaskingBanner() {
+export function OwnerVerifyBanner() {
   return (
     <Banner>
       <IconBox>
-        <CircleAlert
+        <TriangleAlert
           size={ICON_SIZE}
           strokeWidth={ICON_STROKE_WIDTH}
           aria-hidden="true"
         />
       </IconBox>
       <Body>
-        <h4>개인정보 마스킹 필요</h4>
-        <p>개인정보 마스킹이 필요한 파일이 있어요.</p>
-        <p>카드의 ⓘ 아이콘을 눌러 확인해주세요.</p>
+        <h4>소유자 일치 확인</h4>
+        <p>계약서상 임대인과 등기부등본상 소유자가 같은지 직접 확인해주세요.</p>
+        <p>이름, 공동소유 여부, 대리인 계약 여부 등을 꼼꼼히 살펴보세요.</p>
       </Body>
     </Banner>
   );

@@ -43,7 +43,7 @@ export function FileUploader({
 
       {showMaskingSection && (
         <MaskingSection>
-          <PrivacyMaskingBanner />
+          {!isMaskingConfirmed && <PrivacyMaskingBanner />}
           <PrivacyMaskingToggle
             checked={isMaskingConfirmed}
             onChange={onMaskingConfirmChange}
