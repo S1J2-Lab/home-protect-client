@@ -1,75 +1,94 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { type AxiosError } from 'axios';
+import { searchAddress } from '../api/address';
 import type { Address } from '../types/address';
 
-const ADDRESS_PAGE_SIZE = 5;
+const FIRST_PAGE = 1;
+const PAGE_SIZE = 10;
 
-const MOCK_ADDRESSES: Address[] = [
-  {
-    road: '서울특별시 강남구 테헤란로 123',
-    jibun: '서울특별시 강남구 역삼동 123-45',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-  {
-    road: '서울특별시 강남구 테헤란로 456',
-    jibun: '서울특별시 강남구 역삼동 456-78',
-  },
-];
+interface AddressErrorResponse {
+  status: 'error';
+  error: {
+    code: string;
+    message: string;
+  };
+}
+
+const getAddressErrorMessage = (error: unknown) => {
+  const axiosError = error as AxiosError<AddressErrorResponse>;
+
+  return axiosError.response!.data.error.message;
+};
 
 export function useAddressSearch() {
   const [keyword, setKeyword] = useState('');
+  const [searchedKeyword, setSearchedKeyword] = useState('');
+  const [currentAddresses, setCurrentAddresses] = useState<Address[]>([]);
+  const [currentPage, setCurrentPage] = useState(FIRST_PAGE);
   const [isSearched, setIsSearched] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(ADDRESS_PAGE_SIZE);
 
-  const currentAddresses = MOCK_ADDRESSES.slice(0, visibleCount);
-  const hasNextPage = visibleCount < MOCK_ADDRESSES.length;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const handleSearch = () => {
-    if (keyword.trim().length === 0) return;
-    setIsSearched(true);
-    setVisibleCount(ADDRESS_PAGE_SIZE);
-  };
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const loadMoreAddresses = () => {
-    setVisibleCount((prev) =>
-      Math.min(prev + ADDRESS_PAGE_SIZE, MOCK_ADDRESSES.length),
-    );
-  };
+  const handleSearch = useCallback(async () => {
+    const trimmedKeyword = keyword.trim();
+
+    if (!trimmedKeyword) return;
+
+    try {
+      setIsLoading(true);
+      setIsSearched(true);
+      setErrorMessage('');
+
+      const addresses = await searchAddress(trimmedKeyword, FIRST_PAGE);
+
+      setSearchedKeyword(trimmedKeyword);
+      setCurrentAddresses(addresses);
+      setCurrentPage(FIRST_PAGE);
+      setHasNextPage(addresses.length === PAGE_SIZE);
+    } catch (error) {
+      setCurrentAddresses([]);
+      setHasNextPage(false);
+      setErrorMessage(getAddressErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [keyword]);
+
+  const loadMoreAddresses = useCallback(async () => {
+    if (isLoading || isFetchingMore || !hasNextPage || !searchedKeyword) return;
+
+    const nextPage = currentPage + 1;
+
+    try {
+      setIsFetchingMore(true);
+      setErrorMessage('');
+
+      const addresses = await searchAddress(searchedKeyword, nextPage);
+
+      setCurrentAddresses((prev) => [...prev, ...addresses]);
+      setCurrentPage(nextPage);
+      setHasNextPage(addresses.length === PAGE_SIZE);
+    } catch (error) {
+      setErrorMessage(getAddressErrorMessage(error));
+    } finally {
+      setIsFetchingMore(false);
+    }
+  }, [currentPage, hasNextPage, isFetchingMore, isLoading, searchedKeyword]);
 
   return {
-    handleSearch,
     keyword,
     setKeyword,
     isSearched,
     currentAddresses,
     hasNextPage,
     loadMoreAddresses,
-    totalCount: MOCK_ADDRESSES.length,
+    handleSearch,
+    isLoading,
+    isFetchingMore,
+    errorMessage,
   };
 }
