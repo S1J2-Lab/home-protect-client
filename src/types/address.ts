@@ -1,4 +1,10 @@
 export interface Address {
-  road: string;
-  jibun: string;
+  roadAddress: string;
+  jibunAddress: string;
+  buildingName: string;
+  admCd: string;
+  bdMgtSn: string;
+  rnMgtSn: string;
+  mno: string;
+  sno: string;
 }

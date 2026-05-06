@@ -30,7 +30,7 @@ export function AddressSection({
 
   const handleSelectAddress = (address: Address) => {
     onSelect(address);
-    setKeyword(address.road);
+    setKeyword(address.roadAddress);
   };
 
   useEffect(() => {
@@ -93,18 +93,18 @@ export function AddressSection({
         <AddressResultArea ref={resultAreaRef}>
           {currentAddresses.map((address) => {
             const isSelected =
-              selectedAddress?.road === address.road &&
-              selectedAddress?.jibun === address.jibun;
+              selectedAddress?.roadAddress === address.roadAddress &&
+              selectedAddress?.jibunAddress === address.jibunAddress;
 
             return (
               <AddressItem
-                key={`${address.road}-${address.jibun}`}
+                key={address.bdMgtSn}
                 type="button"
                 $isSelected={isSelected}
                 onClick={() => handleSelectAddress(address)}
               >
-                <RoadAddress>{address.road}</RoadAddress>
-                <JibunAddress>(지번 주소) {address.jibun}</JibunAddress>
+                <RoadAddress>{address.roadAddress}</RoadAddress>
+                <JibunAddress>(지번 주소) {address.jibunAddress}</JibunAddress>
               </AddressItem>
             );
           })}
