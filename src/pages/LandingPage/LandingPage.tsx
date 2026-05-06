@@ -3,6 +3,7 @@ import { HeroSection } from '../../components/feature/LandingPage/HeroSection';
 import { FeatureSection } from '../../components/feature/LandingPage/FeatureSection/FeatureSection';
 import { StepSection } from '../../components/feature/LandingPage/StepSection/StepSection';
 import { TargetSection } from '../../components/feature/LandingPage/TargetSection/TargetSection';
+import { FooterFeature } from '../../components/feature/LandingPage/FooterFeature/FooterFeature';
 
 export function LandingPage() {
   return (
@@ -11,6 +12,7 @@ export function LandingPage() {
       <FeatureSection />
       <StepSection />
       <TargetSection />
+      <FooterFeature />
     </PageWrapper>
   );
 }
