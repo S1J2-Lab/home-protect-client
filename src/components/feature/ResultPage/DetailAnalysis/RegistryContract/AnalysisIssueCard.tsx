@@ -22,7 +22,7 @@ export function AnalysisIssueCard({
         </IssueTitle>
       </IssueHeader>
 
-      <InfoGrid showRowDivider={showRowDivider}>
+      <InfoGrid>
         {item.details.map((detail, index) => (
           <InfoBox
             key={`${item.id}-${detail.label}`}
@@ -59,7 +59,7 @@ const IssueTitle = styled.p`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const InfoGrid = styled.div<{ showRowDivider: boolean }>`
+const InfoGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 `;
