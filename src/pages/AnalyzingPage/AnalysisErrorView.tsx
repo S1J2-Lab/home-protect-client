@@ -1,20 +1,16 @@
 import styled from '@emotion/styled';
-import { AlertTriangle, CircleAlert, RotateCcw } from 'lucide-react';
-import type { AnalysisErrorCode } from '../../types/analysis';
-import { ANALYSIS_ERROR_MESSAGES } from '../../constants/analysisErrorMessages';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 
 interface AnalysisErrorViewProps {
-  errorCode: AnalysisErrorCode;
+  errorMessage: string;
   onRetry: () => void;
 }
 
 export function AnalysisErrorView({
-  errorCode,
+  errorMessage,
   onRetry,
 }: AnalysisErrorViewProps) {
-  const error = ANALYSIS_ERROR_MESSAGES[errorCode];
-
   return (
     <ErrorWrapper>
       <ErrorContent>
@@ -23,16 +19,9 @@ export function AnalysisErrorView({
         </IconCircle>
 
         <TextBox>
-          <Title>{error.title}</Title>
-          <Description>{error.description}</Description>
+          <Title>분석을 완료하지 못했어요</Title>
+          <Description>{errorMessage}</Description>
         </TextBox>
-
-        <GuideCard>
-          <GuideIcon>
-            <CircleAlert size={20} />
-          </GuideIcon>
-          <Guide>{error.guide}</Guide>
-        </GuideCard>
       </ErrorContent>
 
       <ButtonWrapper>
@@ -43,7 +32,7 @@ export function AnalysisErrorView({
           iconStart={<RotateCcw size={18} />}
           onClick={onRetry}
         >
-          {error.buttonText}
+          다시 분석하기
         </Button>
       </ButtonWrapper>
     </ErrorWrapper>
@@ -95,32 +84,6 @@ const Description = styled.p`
   font-size: 13px;
   font-weight: 500;
   line-height: 1.6;
-`;
-
-const GuideCard = styled.div`
-  width: 100%;
-  margin-top: 34px;
-  padding: 18px 18px;
-  border-radius: ${({ theme }) => theme.radius.xl};
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background-color: ${({ theme }) => theme.colors.surface};
-  box-shadow: ${({ theme }) => theme.shadow.card};
-`;
-
-const GuideIcon = styled.div`
-  margin-top: 2px;
-  color: ${({ theme }) => theme.colors.danger};
-  flex-shrink: 0;
-`;
-
-const Guide = styled.p`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.textSub};
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.65;
 `;
 
 const ButtonWrapper = styled.div`

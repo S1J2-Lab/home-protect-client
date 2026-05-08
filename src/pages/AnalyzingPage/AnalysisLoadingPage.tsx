@@ -1,44 +1,57 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { useAnalysisProgress } from '../../hooks/useAnalysisProgress';
-import type {
-  AnalysisErrorCode,
-  AnalysisPageStatus,
-} from '../../types/analysis';
-import { AnalysisLoadingView } from './AnalysisLoadingView';
+import { useCallback, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAnalyzingProgress } from '../../hooks/useAnalyzingProgress';
+import type { AnalysisPageStatus } from '../../types/analysis';
 import { AnalysisErrorView } from './AnalysisErrorView';
-import { useEffect, useState } from 'react';
+import { AnalysisLoadingView } from './AnalysisLoadingView';
+
+interface AnalysisLocationState {
+  sessionId?: string;
+}
 
 export function AnalysisLoadingPage() {
-  const { progress, steps, isCompleted, resetProgress } = useAnalysisProgress();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const state = location.state as AnalysisLocationState | null;
+  const sessionId = state?.sessionId ?? null;
+
   const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [retryKey, setRetryKey] = useState(0);
 
-  const [errorCode] = useState<AnalysisErrorCode>('API_UNAVAILABLE');
-
-  useEffect(() => {
-    if (pageStatus !== 'loading') return;
-    if (!isCompleted) return;
-
-    const timer = setTimeout(() => {
-      navigate('/result');
+  const handleComplete = useCallback(() => {
+    setTimeout(() => {
+      navigate('/result', {
+        state: { sessionId },
+      });
     }, 700);
+  }, [navigate, sessionId]);
 
-    return () => clearTimeout(timer);
-  }, [isCompleted, navigate, pageStatus]);
+  const handleError = useCallback((message: string) => {
+    setErrorMessage(message);
+    setPageStatus('error');
+  }, []);
+
+  const { progress, steps, resetProgress } = useAnalyzingProgress({
+    sessionId,
+    retryKey,
+    onComplete: handleComplete,
+    onError: handleError,
+  });
 
   const handleRetry = () => {
-    resetProgress?.();
+    resetProgress();
+    setErrorMessage('');
     setPageStatus('loading');
-
-    // TODO: 나중에 여기서 분석 재요청 API 호출
-    // requestAnalysis();
+    setRetryKey((prev) => prev + 1);
   };
 
   return (
     <PageWrapper>
       {pageStatus === 'error' ? (
-        <AnalysisErrorView errorCode={errorCode} onRetry={handleRetry} />
+        <AnalysisErrorView errorMessage={errorMessage} onRetry={handleRetry} />
       ) : (
         <AnalysisLoadingView progress={progress} steps={steps} />
       )}
