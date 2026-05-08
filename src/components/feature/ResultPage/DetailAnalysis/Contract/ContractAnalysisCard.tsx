@@ -31,7 +31,7 @@ export function ContractAnalysisCard({
         )
       }
     >
-      <AnalysisIssueList items={previewItems} direction="column" />
+      <AnalysisIssueList items={previewItems} showRowDivider />
     </AnalysisCard>
   );
 }
