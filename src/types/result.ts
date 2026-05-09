@@ -1,6 +1,4 @@
-// export type IssueVariant = 'danger' | 'warning' | 'success';
-
-export type IssueVariant = 'danger' | 'caution' | 'safe'; //백엔드 json 구조
+export type IssueVariant = 'danger' | 'caution' | 'safe';
 export type IssueDirection = 'grid' | 'column';
 export interface AnalysisIssueDetail {
   label: string;
