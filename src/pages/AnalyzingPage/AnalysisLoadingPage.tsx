@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyzingProgress } from '../../hooks/useAnalyzingProgress';
 import type { AnalysisPageStatus } from '../../types/analysis';
@@ -22,13 +22,27 @@ export function AnalysisLoadingPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [retryKey, setRetryKey] = useState(0);
 
+  const completeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const handleComplete = useCallback(() => {
-    setTimeout(() => {
+    if (completeTimerRef.current) {
+      clearTimeout(completeTimerRef.current);
+    }
+
+    completeTimerRef.current = setTimeout(() => {
       navigate('/result', {
         state: { sessionId },
       });
     }, 700);
   }, [navigate, sessionId]);
+
+  useEffect(() => {
+    return () => {
+      if (completeTimerRef.current) {
+        clearTimeout(completeTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleError = useCallback((message: string) => {
     setErrorMessage(message);
