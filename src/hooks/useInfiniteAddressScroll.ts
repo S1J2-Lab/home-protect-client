@@ -1,4 +1,5 @@
-import { useEffect, type RefObject } from 'react';
+import type { RefObject } from 'react';
+import { useIntersectionObserver } from './useIntersectionObserver';
 
 interface UseInfiniteAddressScrollParams {
   rootRef: RefObject<HTMLDivElement | null>;
@@ -13,30 +14,10 @@ export function useInfiniteAddressScroll({
   enabled,
   onIntersect,
 }: UseInfiniteAddressScrollParams) {
-  useEffect(() => {
-    if (!enabled) return;
-
-    const target = targetRef.current;
-
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          onIntersect();
-        }
-      },
-      {
-        root: rootRef.current,
-        rootMargin: '40px',
-        threshold: 0.1,
-      },
-    );
-
-    observer.observe(target);
-
-    return () => {
-      observer.unobserve(target);
-    };
-  }, [enabled, onIntersect, rootRef, targetRef]);
+  useIntersectionObserver({
+    rootRef,
+    targetRef,
+    enabled,
+    onIntersect,
+  });
 }

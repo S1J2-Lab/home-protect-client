@@ -19,7 +19,7 @@ export function ContractDetailPage({ contract }: ContractDetailPageProps) {
       title="임대차계약서 전체 분석"
       icon={<ScrollText size={22} />}
       items={items}
-      direction="column"
+      showRowDivider
     />
   );
 }
