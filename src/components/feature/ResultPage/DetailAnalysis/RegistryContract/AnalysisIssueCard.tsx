@@ -5,13 +5,13 @@ import type { AnalysisIssueItem } from '../../../../../types/result';
 interface AnalysisIssueCardProps {
   order: number;
   item: AnalysisIssueItem;
-  direction?: 'grid' | 'column';
+  showRowDivider?: boolean;
 }
 
 export function AnalysisIssueCard({
   order,
   item,
-  direction = 'grid',
+  showRowDivider = false,
 }: AnalysisIssueCardProps) {
   return (
     <IssueCard>
@@ -22,12 +22,13 @@ export function AnalysisIssueCard({
         </IssueTitle>
       </IssueHeader>
 
-      <InfoGrid direction={direction}>
+      <InfoGrid>
         {item.details.map((detail, index) => (
           <InfoBox
             key={`${item.id}-${detail.label}`}
-            direction={direction}
-            hasDivider={index < item.details.length - 1}
+            isLeftColumn={index % 2 === 0}
+            isTopRow={index < 2}
+            showRowDivider={showRowDivider}
           >
             <InfoLabel>{detail.label}</InfoLabel>
             <InfoText>{detail.content}</InfoText>
@@ -53,47 +54,43 @@ const IssueHeader = styled.div`
 
 const IssueTitle = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const InfoGrid = styled.div<{ direction: 'grid' | 'column' }>`
+const InfoGrid = styled.div`
   display: grid;
-  grid-template-columns: ${({ direction }) =>
-    direction === 'column' ? '1fr' : 'repeat(2, 1fr)'};
+  grid-template-columns: repeat(2, 1fr);
 `;
 
 const InfoBox = styled.div<{
-  direction: 'grid' | 'column';
-  hasDivider: boolean;
+  isLeftColumn: boolean;
+  isTopRow: boolean;
+  showRowDivider: boolean;
 }>`
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 10px;
 
-  ${({ direction, hasDivider, theme }) =>
-    direction === 'grid' &&
-    hasDivider &&
+  ${({ isLeftColumn, theme }) =>
+    isLeftColumn &&
     `
-      padding-right: 14px;
-      margin-right: 14px;
       border-right: 1px solid ${theme.colors.borderLight};
     `}
 
-  ${({ direction, hasDivider, theme }) =>
-    direction === 'column' &&
-    hasDivider &&
+  ${({ isTopRow, showRowDivider, theme }) =>
+    showRowDivider &&
+    isTopRow &&
     `
-      padding-bottom: 14px;
-      margin-bottom: 14px;
       border-bottom: 1px solid ${theme.colors.borderLight};
     `}
 `;
 
 const InfoLabel = styled.p`
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 `;
 
