@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import { Check, Lock } from 'lucide-react';
 import { Card } from '../../../common/Card';
+import { Button } from '../../../common/Button';
 import { UploaderCardHeader } from './UploaderCardHeader';
 import { UploaderCounterBar } from './UploaderCounterBar';
 import { UploaderEmptyDropZone } from './UploaderEmptyDropZone';
@@ -11,10 +13,14 @@ import type {
 } from '../../../../constants/uploadedFile';
 import { PRIVACY_ISSUE_KEYS } from '../../../../constants/uploadedFile';
 
+const CONFIRM_ICON_SIZE = 14;
+const CONFIRM_ICON_STROKE = 2.5;
+
 interface FileUploaderCardProps {
   config: UploaderConfig;
   files: UploadedFile[];
   onChange: (files: UploadedFile[]) => void;
+  onOrderConfirmChange: (confirmed: boolean) => void;
 }
 
 function inspectFile(name: string): Pick<UploadedFile, 'status' | 'issues'> {
@@ -36,10 +42,17 @@ export function FileUploaderCard({
   config,
   files,
   onChange,
+  onOrderConfirmChange,
 }: FileUploaderCardProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
 
   const openPicker = () => inputRef.current?.click();
+
+  const resetOrderConfirm = () => {
+    setIsOrderConfirmed(false);
+    onOrderConfirmChange(false);
+  };
 
   const handleFiles = (list: FileList | null) => {
     if (!list || !list.length) return;
@@ -50,12 +63,26 @@ export function FileUploaderCard({
       ...inspectFile(f.name),
     }));
     onChange([...files, ...next]);
+    if (isOrderConfirmed) resetOrderConfirm();
     if (inputRef.current) inputRef.current.value = '';
   };
 
   const handleRemove = (id: string) => {
     onChange(files.filter((f) => f.id !== id));
+    if (isOrderConfirmed) resetOrderConfirm();
   };
+
+  const handleReorder = (next: UploadedFile[]) => {
+    onChange(next);
+  };
+
+  const handleToggleConfirm = () => {
+    const next = !isOrderConfirmed;
+    setIsOrderConfirmed(next);
+    onOrderConfirmChange(next);
+  };
+
+  const showConfirmButton = files.length > 1;
 
   return (
     <StyledCard>
@@ -74,7 +101,7 @@ export function FileUploaderCard({
           ref={inputRef}
           type="file"
           multiple
-          accept="application/pdf,image/*"
+          accept="application/pdf,image/jpeg,image/png"
           onChange={(e) => handleFiles(e.target.files)}
         />
 
@@ -84,8 +111,35 @@ export function FileUploaderCard({
           <UploaderFileList
             files={files}
             onRemove={handleRemove}
-            onReorder={onChange}
+            onReorder={handleReorder}
+            isLocked={isOrderConfirmed}
           />
+        )}
+
+        {showConfirmButton && (
+          <Button
+            variant={isOrderConfirmed ? 'outline' : 'primary'}
+            size="sm"
+            width="100%"
+            iconStart={
+              isOrderConfirmed ? (
+                <Lock
+                  size={CONFIRM_ICON_SIZE}
+                  strokeWidth={CONFIRM_ICON_STROKE}
+                  aria-hidden="true"
+                />
+              ) : (
+                <Check
+                  size={CONFIRM_ICON_SIZE}
+                  strokeWidth={CONFIRM_ICON_STROKE}
+                  aria-hidden="true"
+                />
+              )
+            }
+            onClick={handleToggleConfirm}
+          >
+            {isOrderConfirmed ? '순서 변경하기' : '이 순서로 확정하기'}
+          </Button>
         )}
       </Body>
     </StyledCard>

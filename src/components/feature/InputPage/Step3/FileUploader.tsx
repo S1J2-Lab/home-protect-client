@@ -14,6 +14,7 @@ interface FileUploaderProps {
   onMaskingConfirmChange: (confirmed: boolean) => void;
   files: FileMap;
   onFilesChange: (key: UploaderKey, files: UploadedFile[]) => void;
+  onOrderConfirmChange: (key: UploaderKey, confirmed: boolean) => void;
 }
 
 function hasWarningFiles(files: FileMap) {
@@ -27,6 +28,7 @@ export function FileUploader({
   onMaskingConfirmChange,
   files,
   onFilesChange,
+  onOrderConfirmChange,
 }: FileUploaderProps) {
   const showMaskingSection = hasWarningFiles(files);
 
@@ -38,6 +40,9 @@ export function FileUploader({
           config={config}
           files={files[config.key]}
           onChange={(next) => onFilesChange(config.key, next)}
+          onOrderConfirmChange={(confirmed) =>
+            onOrderConfirmChange(config.key, confirmed)
+          }
         />
       ))}
 
