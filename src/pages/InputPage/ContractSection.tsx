@@ -10,6 +10,8 @@ interface ContractSectionProps {
   onContractTypeChange: (contractType: ContractType) => void;
   deposit: string;
   onDepositChange: (deposit: string) => void;
+  monthlyRent: string;
+  onMonthlyRentChange: (monthlyRent: string) => void;
   startDate: Date | null;
   onStartDateChange: (date: Date | null) => void;
   endDate: Date | null;
@@ -21,11 +23,14 @@ export function ContractSection({
   onContractTypeChange,
   deposit,
   onDepositChange,
+  monthlyRent,
+  onMonthlyRentChange,
   startDate,
   onStartDateChange,
   endDate,
   onEndDateChange,
 }: ContractSectionProps) {
+  const hasMonthlyRent = contractType !== 'jeonse';
   const handleStartDateChange = (date: Date | null) => {
     onStartDateChange(date);
 
@@ -58,6 +63,21 @@ export function ContractSection({
           end={<span>원</span>}
         />
       </FieldGroup>
+
+      {hasMonthlyRent && (
+        <FieldGroup>
+          <Label htmlFor="monthlyRent">월세</Label>
+          <Input
+            id="monthlyRent"
+            value={monthlyRent}
+            onChange={(event) => onMonthlyRentChange(event.target.value)}
+            inputMode="numeric"
+            placeholder="월세를 입력해주세요"
+            start={<span>₩</span>}
+            end={<span>원</span>}
+          />
+        </FieldGroup>
+      )}
 
       <FieldGroup>
         <Label>계약일</Label>

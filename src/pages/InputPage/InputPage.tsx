@@ -12,6 +12,8 @@ import type {
   UploadedFile,
   UploaderKey,
 } from '../../constants/uploadedFile';
+import { initAnalysis } from '../../api/analyzing';
+import { getApiErrorMessage, type ApiError } from '../../api/error';
 
 const INPUT_STEPS = ['address', 'contract', 'upload'] as const;
 
@@ -27,12 +29,20 @@ const INITIAL_ORDER_CONFIRMED: OrderConfirmMap = {
   contract: false,
 };
 
+function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function InputPage() {
   const navigate = useNavigate();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [contractType, setContractType] = useState<ContractType>('jeonse');
   const [deposit, setDeposit] = useState('');
+  const [monthlyRent, setMonthlyRent] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [files, setFiles] = useState<FileMap>(INITIAL_FILES);
@@ -41,6 +51,9 @@ export function InputPage() {
   const [orderConfirmed, setOrderConfirmed] = useState<OrderConfirmMap>(
     INITIAL_ORDER_CONFIRMED,
   );
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const currentStep = INPUT_STEPS[currentStepIndex];
 
@@ -55,16 +68,56 @@ export function InputPage() {
   const isOrderConfirmed = Object.entries(orderConfirmed).every(
     ([key, confirmed]) => files[key as UploaderKey].length <= 1 || confirmed,
   );
+  const isContractStepNextDisabled = isSubmitting;
+
   const isUploadStepNextDisabled =
+    !sessionId ||
     (hasWarningFiles && !isMaskingConfirmed) ||
     !isOwnerVerifyConfirmed ||
     (hasMultiPageFiles && !isOrderConfirmed);
 
-  const handleNext = () => {
-    if (currentStep === 'upload') {
-      navigate('/analyze');
-      return;
+  const handleContractNext = async () => {
+    if (!selectedAddress || !startDate || !endDate) return;
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const id = await initAnalysis({
+        address: selectedAddress.roadAddress,
+        jibunAddress: selectedAddress.jibunAddress,
+        admCd: selectedAddress.admCd,
+        rnMgtSn: selectedAddress.rnMgtSn,
+        bdMgtSn: selectedAddress.bdMgtSn,
+        mno: selectedAddress.mno,
+        sno: selectedAddress.sno,
+        deposit: Number(deposit.replace(/[^0-9]/g, '')),
+        monthlyRent:
+          contractType !== 'jeonse'
+            ? Number(monthlyRent.replace(/[^0-9]/g, ''))
+            : 0,
+        contractType,
+        contractPeriod: {
+          startDate: formatDate(startDate),
+          endDate: formatDate(endDate),
+        },
+      });
+
+      setSessionId(id);
+      setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error as ApiError));
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleUploadNext = () => {
+    if (!sessionId) return;
+    navigate('/analyze', { state: { sessionId } });
+  };
+
+  const handleNext = () => {
     setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
   };
 
@@ -111,11 +164,15 @@ export function InputPage() {
             onContractTypeChange={setContractType}
             deposit={deposit}
             onDepositChange={setDeposit}
+            monthlyRent={monthlyRent}
+            onMonthlyRentChange={setMonthlyRent}
             startDate={startDate}
             onStartDateChange={setStartDate}
             endDate={endDate}
             onEndDateChange={setEndDate}
           />
+
+          {submitError && <ErrorText>{submitError}</ErrorText>}
 
           <ButtonArea>
             <Button
@@ -131,9 +188,10 @@ export function InputPage() {
               variant="primary"
               size="lg"
               width="100%"
-              onClick={handleNext}
+              onClick={handleContractNext}
+              disabled={isContractStepNextDisabled}
             >
-              다음
+              {isSubmitting ? '준비 중...' : '다음'}
             </Button>
           </ButtonArea>
         </>
@@ -165,7 +223,7 @@ export function InputPage() {
               variant="primary"
               size="lg"
               width="100%"
-              onClick={handleNext}
+              onClick={handleUploadNext}
               disabled={isUploadStepNextDisabled}
             >
               다음: 분석 시작하기
@@ -188,4 +246,10 @@ const ButtonArea = styled.div`
   display: flex;
   gap: 8px;
   padding-top: 24px;
+`;
+
+const ErrorText = styled.p`
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.danger};
+  text-align: center;
 `;
