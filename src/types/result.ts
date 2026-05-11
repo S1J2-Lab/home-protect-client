@@ -15,8 +15,6 @@ export interface AnalysisIssueItem {
   details: AnalysisIssueDetail[];
 }
 
-//export type BuildingLevel = 'danger' | 'caution' | 'safe';
-
 export interface BuildingData {
   level: TagVariant;
   primaryUse: string;
