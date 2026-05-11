@@ -14,6 +14,7 @@ import type {
 } from '../../constants/uploadedFile';
 import { initAnalysis } from '../../api/analyzing';
 import { getApiErrorMessage, type ApiError } from '../../api/error';
+import { saveAnalysisSessionId } from '../../utils/analysisStorage';
 
 const INPUT_STEPS = ['address', 'contract', 'upload'] as const;
 
@@ -51,7 +52,12 @@ export function InputPage() {
   const [orderConfirmed, setOrderConfirmed] = useState<OrderConfirmMap>(
     INITIAL_ORDER_CONFIRMED,
   );
-  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [analysisSessionId, setAnalysisSessionId] = useState<string | null>(
+    null,
+  );
+  const [scanSessionIds, setScanSessionIds] = useState<
+    Partial<Record<UploaderKey, string>>
+  >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -59,9 +65,6 @@ export function InputPage() {
 
   const isAddressStepNextDisabled = selectedAddress === null;
 
-  const hasWarningFiles = Object.values(files).some((list) =>
-    list.some((f) => f.status === 'warning'),
-  );
   const hasMultiPageFiles = Object.values(files).some(
     (list) => list.length > 1,
   );
@@ -70,9 +73,12 @@ export function InputPage() {
   );
   const isContractStepNextDisabled = isSubmitting;
 
+  const isBothScanned =
+    scanSessionIds.registry !== undefined &&
+    scanSessionIds.contract !== undefined;
+
   const isUploadStepNextDisabled =
-    !sessionId ||
-    (hasWarningFiles && !isMaskingConfirmed) ||
+    !isBothScanned ||
     !isOwnerVerifyConfirmed ||
     (hasMultiPageFiles && !isOrderConfirmed);
 
@@ -100,7 +106,8 @@ export function InputPage() {
         },
       });
 
-      setSessionId(id);
+      saveAnalysisSessionId(id);
+      setAnalysisSessionId(id);
       setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
     } catch (error) {
       setSubmitError(getApiErrorMessage(error as ApiError));
@@ -110,8 +117,8 @@ export function InputPage() {
   };
 
   const handleUploadNext = () => {
-    if (!sessionId) return;
-    navigate('/analyze', { state: { sessionId } });
+    if (!analysisSessionId) return;
+    navigate('/analyze', { state: { sessionId: analysisSessionId } });
   };
 
   const handleNext = () => {
@@ -123,12 +130,15 @@ export function InputPage() {
   };
 
   const handleFilesChange = (key: UploaderKey, next: UploadedFile[]) => {
-    if (next.length > files[key].length) setIsMaskingConfirmed(false);
     setFiles((prev) => ({ ...prev, [key]: next }));
   };
 
   const handleOrderConfirmChange = (key: UploaderKey, confirmed: boolean) => {
     setOrderConfirmed((prev) => ({ ...prev, [key]: confirmed }));
+  };
+
+  const handleScanSuccess = (key: UploaderKey, id: string) => {
+    setScanSessionIds((prev) => ({ ...prev, [key]: id }));
   };
 
   return (
@@ -200,6 +210,7 @@ export function InputPage() {
             files={files}
             onFilesChange={handleFilesChange}
             onOrderConfirmChange={handleOrderConfirmChange}
+            onScanSuccess={handleScanSuccess}
             isMaskingConfirmed={isMaskingConfirmed}
             onMaskingConfirmChange={setIsMaskingConfirmed}
             isOwnerVerifyConfirmed={isOwnerVerifyConfirmed}

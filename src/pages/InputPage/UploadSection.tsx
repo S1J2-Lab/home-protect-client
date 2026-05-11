@@ -12,6 +12,7 @@ interface UploadSectionProps {
   files: FileMap;
   onFilesChange: (key: UploaderKey, files: UploadedFile[]) => void;
   onOrderConfirmChange: (key: UploaderKey, confirmed: boolean) => void;
+  onScanSuccess: (key: UploaderKey, sessionId: string) => void;
   isMaskingConfirmed: boolean;
   onMaskingConfirmChange: (confirmed: boolean) => void;
   isOwnerVerifyConfirmed: boolean;
@@ -22,6 +23,7 @@ export function UploadSection({
   files,
   onFilesChange,
   onOrderConfirmChange,
+  onScanSuccess,
   isMaskingConfirmed,
   onMaskingConfirmChange,
   isOwnerVerifyConfirmed,
@@ -33,6 +35,7 @@ export function UploadSection({
         files={files}
         onFilesChange={onFilesChange}
         onOrderConfirmChange={onOrderConfirmChange}
+        onScanSuccess={onScanSuccess}
         isMaskingConfirmed={isMaskingConfirmed}
         onMaskingConfirmChange={onMaskingConfirmChange}
       />
