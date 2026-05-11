@@ -39,6 +39,21 @@ export async function initAnalysis(
   return data.data.sessionId;
 }
 
+interface RunAnalysisRequest {
+  sessionId: string;
+  registrySessionId: string;
+  contractSessionId: string;
+  ownerVerified: boolean;
+}
+
+interface RunAnalysisResponse {
+  status: 'success';
+}
+
+export async function runAnalysis(request: RunAnalysisRequest): Promise<void> {
+  await apiClient.post<RunAnalysisResponse>('/analysis/run', request);
+}
+
 export function createAnalysisStream(sessionId: string) {
   const encodedSessionId = encodeURIComponent(sessionId);
 
