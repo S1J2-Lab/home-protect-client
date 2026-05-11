@@ -31,6 +31,13 @@ export function useResultPdfDownload() {
 
       let currentY = margin;
 
+      const getSectionPdfHeight = (section: HTMLElement) => {
+        const sectionWidth = section.offsetWidth;
+        const sectionHeight = section.offsetHeight;
+
+        return (sectionHeight * contentWidth) / sectionWidth;
+      };
+
       const sections = Array.from(
         pdfTarget.querySelectorAll(
           '[data-pdf-section], [data-pdf-title-section]',
@@ -50,10 +57,7 @@ export function useResultPdfDownload() {
           const nextSection = sections[index + 1];
 
           if (nextSection) {
-            const { imageHeight: nextImageHeight } = await createSectionImage(
-              nextSection,
-              contentWidth,
-            );
+            const nextImageHeight = getSectionPdfHeight(nextSection);
 
             if (currentY + imageHeight + nextImageHeight > maxBottom) {
               pdf.addPage();
@@ -80,6 +84,8 @@ export function useResultPdfDownload() {
       }
 
       pdf.save(createPdfFileName(address));
+    } catch {
+      alert('PDF 저장 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.');
     } finally {
       setIsPdfSaving(false);
     }
