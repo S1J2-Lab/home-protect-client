@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-
-type ResultTab = 'detail' | 'checklist' | 'caution';
+import type { ResultTab } from '../../../types/tab';
 
 interface ResultTabsProps {
   activeTab: ResultTab;
@@ -10,7 +9,6 @@ interface ResultTabsProps {
 const tabs = [
   { key: 'detail', label: '상세 분석' },
   { key: 'checklist', label: '체크리스트' },
-  { key: 'caution', label: '주의 사항' },
 ] as const;
 
 export function ResultTabs({ activeTab, onChangeTab }: ResultTabsProps) {
@@ -31,7 +29,7 @@ export function ResultTabs({ activeTab, onChangeTab }: ResultTabsProps) {
 }
 const TabCard = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   background: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radius.xl};
   box-shadow: ${({ theme }) => theme.shadow.card};
