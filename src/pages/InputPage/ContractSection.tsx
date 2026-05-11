@@ -8,10 +8,10 @@ import type { ContractType } from '../../constants/contract';
 interface ContractSectionProps {
   contractType: ContractType;
   onContractTypeChange: (contractType: ContractType) => void;
-  deposit: string;
-  onDepositChange: (deposit: string) => void;
-  monthlyRent: string;
-  onMonthlyRentChange: (monthlyRent: string) => void;
+  deposit: number;
+  onDepositChange: (deposit: number) => void;
+  monthlyRent: number;
+  onMonthlyRentChange: (monthlyRent: number) => void;
   startDate: Date | null;
   onStartDateChange: (date: Date | null) => void;
   endDate: Date | null;
@@ -55,12 +55,12 @@ export function ContractSection({
         <Label htmlFor="deposit">보증금</Label>
         <Input
           id="deposit"
-          value={deposit}
-          onChange={(event) => onDepositChange(event.target.value)}
-          inputMode="numeric"
+          value={deposit || ''}
+          onChange={(event) => onDepositChange(event.target.valueAsNumber)}
+          type="number"
           placeholder="보증금을 입력해주세요"
           start={<span>₩</span>}
-          end={<span>원</span>}
+          end={<span>만원</span>}
         />
       </FieldGroup>
 
@@ -69,12 +69,14 @@ export function ContractSection({
           <Label htmlFor="monthlyRent">월세</Label>
           <Input
             id="monthlyRent"
-            value={monthlyRent}
-            onChange={(event) => onMonthlyRentChange(event.target.value)}
-            inputMode="numeric"
+            value={monthlyRent || ''}
+            onChange={(event) =>
+              onMonthlyRentChange(event.target.valueAsNumber)
+            }
+            type="number"
             placeholder="월세를 입력해주세요"
             start={<span>₩</span>}
-            end={<span>원</span>}
+            end={<span>만원</span>}
           />
         </FieldGroup>
       )}

@@ -41,8 +41,8 @@ export function InputPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [contractType, setContractType] = useState<ContractType>('jeonse');
-  const [deposit, setDeposit] = useState('');
-  const [monthlyRent, setMonthlyRent] = useState('');
+  const [deposit, setDeposit] = useState(0);
+  const [monthlyRent, setMonthlyRent] = useState(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [files, setFiles] = useState<FileMap>(INITIAL_FILES);
@@ -91,11 +91,8 @@ export function InputPage() {
         bdMgtSn: selectedAddress.bdMgtSn,
         mno: selectedAddress.mno,
         sno: selectedAddress.sno,
-        deposit: Number(deposit.replace(/[^0-9]/g, '')),
-        monthlyRent:
-          contractType !== 'jeonse'
-            ? Number(monthlyRent.replace(/[^0-9]/g, ''))
-            : 0,
+        deposit: deposit * 10000,
+        monthlyRent: contractType !== 'jeonse' ? monthlyRent * 10000 : 0,
         contractType,
         contractPeriod: {
           startDate: formatDate(startDate),
