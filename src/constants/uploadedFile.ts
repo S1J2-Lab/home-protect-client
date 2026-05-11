@@ -1,14 +1,14 @@
 import type { LucideIcon } from 'lucide-react';
 import { File, Signature } from 'lucide-react';
 
-export type FileStatus = 'ok' | 'warning';
+export type FileStatus = 'pending' | 'loading' | 'safe' | 'error';
 
 export interface UploadedFile {
   id: string;
+  file: File;
   name: string;
   size: number;
   status: FileStatus;
-  issues: string[];
 }
 
 export type UploaderKey = 'registry' | 'contract';
@@ -35,15 +35,4 @@ export const UPLOADER_CONFIGS: UploaderConfig[] = [
   },
 ];
 
-export const PRIVACY_ISSUE_KEYS = [
-  '주민등록번호',
-  '연락처',
-  '계좌번호',
-  '이메일',
-  '생년월일',
-] as const;
-
 export type FileMap = Record<UploaderKey, UploadedFile[]>;
-
-export const PRIVACY_WARNING_MESSAGE =
-  '개인정보 마스킹이 필요한 파일이 있어요.\n카드의 ⓘ 아이콘을 눌러 확인해주세요.';
