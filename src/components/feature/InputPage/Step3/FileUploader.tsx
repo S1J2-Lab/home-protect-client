@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { FileUploaderCard } from './FileUploaderCard';
-import { PrivacyMaskingBanner } from './PrivacyMaskingBanner';
 import { PrivacyMaskingToggle } from './PrivacyMaskingToggle';
 import type {
   FileMap,
@@ -15,12 +14,7 @@ interface FileUploaderProps {
   files: FileMap;
   onFilesChange: (key: UploaderKey, files: UploadedFile[]) => void;
   onOrderConfirmChange: (key: UploaderKey, confirmed: boolean) => void;
-}
-
-function hasWarningFiles(files: FileMap) {
-  return Object.values(files).some((list) =>
-    list.some((f) => f.status === 'warning'),
-  );
+  onScanSuccess: (key: UploaderKey, sessionId: string) => void;
 }
 
 export function FileUploader({
@@ -29,9 +23,8 @@ export function FileUploader({
   files,
   onFilesChange,
   onOrderConfirmChange,
+  onScanSuccess,
 }: FileUploaderProps) {
-  const showMaskingSection = hasWarningFiles(files);
-
   return (
     <Wrap>
       {UPLOADER_CONFIGS.map((config) => (
@@ -43,18 +36,14 @@ export function FileUploader({
           onOrderConfirmChange={(confirmed) =>
             onOrderConfirmChange(config.key, confirmed)
           }
+          onScanSuccess={onScanSuccess}
         />
       ))}
 
-      {showMaskingSection && (
-        <MaskingSection>
-          {!isMaskingConfirmed && <PrivacyMaskingBanner />}
-          <PrivacyMaskingToggle
-            checked={isMaskingConfirmed}
-            onChange={onMaskingConfirmChange}
-          />
-        </MaskingSection>
-      )}
+      <PrivacyMaskingToggle
+        checked={isMaskingConfirmed}
+        onChange={onMaskingConfirmChange}
+      />
     </Wrap>
   );
 }
@@ -63,10 +52,4 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
-
-const MaskingSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `;

@@ -98,4 +98,14 @@ const StyledInput = styled.input<{ $hasStart: boolean; $hasEnd: boolean }>`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &[type='number']::-webkit-inner-spin-button,
+  &[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 `;
