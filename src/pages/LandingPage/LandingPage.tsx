@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { HeroSection } from '../../components/feature/LandingPage/HeroSection';
+import { HeroSection } from '../../components/feature/LandingPage/HeroSection/HeroSection';
 import { FeatureSection } from '../../components/feature/LandingPage/FeatureSection/FeatureSection';
 import { StepSection } from '../../components/feature/LandingPage/StepSection/StepSection';
 import { TargetSection } from '../../components/feature/LandingPage/TargetSection/TargetSection';
