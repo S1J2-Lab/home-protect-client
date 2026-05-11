@@ -4,12 +4,12 @@ import type { AnalysisIssueItem } from '../../../../../types/result';
 
 interface AnalysisIssueListProps {
   items: AnalysisIssueItem[];
-  direction?: 'grid' | 'column';
+  showRowDivider?: boolean;
 }
 
 export function AnalysisIssueList({
   items,
-  direction = 'grid',
+  showRowDivider = false,
 }: AnalysisIssueListProps) {
   return (
     <Content>
@@ -18,7 +18,7 @@ export function AnalysisIssueList({
           key={item.id}
           order={index + 1}
           item={item}
-          direction={direction}
+          showRowDivider={showRowDivider}
         />
       ))}
     </Content>

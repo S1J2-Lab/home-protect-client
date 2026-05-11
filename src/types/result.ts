@@ -1,5 +1,7 @@
-export type IssueVariant = 'danger' | 'caution' | 'safe';
 export type IssueDirection = 'grid' | 'column';
+
+import type { TagVariant } from '../constants/tag';
+
 export interface AnalysisIssueDetail {
   label: string;
   content: string;
@@ -9,14 +11,14 @@ export interface AnalysisIssueItem {
   id: string;
   title: string;
   label: string;
-  variant: IssueVariant;
+  variant: TagVariant;
   details: AnalysisIssueDetail[];
 }
 
-export type BuildingLevel = 'danger' | 'caution' | 'safe';
+//export type BuildingLevel = 'danger' | 'caution' | 'safe';
 
 export interface BuildingData {
-  level: BuildingLevel;
+  level: TagVariant;
   primaryUse: string;
   isResidential: boolean;
   violation: boolean;

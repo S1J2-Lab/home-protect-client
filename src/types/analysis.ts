@@ -1,17 +1,16 @@
-export type AnalysisStepStatus = 'done' | 'loading' | 'pending';
+export type AnalysisStepId =
+  | 'jeonseRatio'
+  | 'registryParse'
+  | 'contractReview'
+  | 'buildingCheck';
 
-export type AnalysisPageStatus = 'loading' | 'error' | 'done';
-
-export type AnalysisErrorCode =
-  | 'API_UNAVAILABLE'
-  | 'ANALYSIS_TIMEOUT'
-  | 'INVALID_ADDRESS'
-  | 'AI_PARSE_FAILED'
-  | 'NETWORK_ERROR';
+export type AnalysisStepStatus = 'pending' | 'loading' | 'done';
 
 export interface AnalysisStep {
-  id: string;
+  id: AnalysisStepId;
   title: string;
   description: string;
   status: AnalysisStepStatus;
 }
+
+export type AnalysisPageStatus = 'loading' | 'error';

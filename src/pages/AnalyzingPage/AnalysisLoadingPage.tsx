@@ -1,44 +1,83 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { useAnalysisProgress } from '../../hooks/useAnalysisProgress';
-import type {
-  AnalysisErrorCode,
-  AnalysisPageStatus,
-} from '../../types/analysis';
-import { AnalysisLoadingView } from './AnalysisLoadingView';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAnalyzingProgress } from '../../hooks/useAnalyzingProgress';
+import type { AnalysisPageStatus } from '../../types/analysis';
 import { AnalysisErrorView } from './AnalysisErrorView';
-import { useEffect, useState } from 'react';
+import { AnalysisLoadingView } from './AnalysisLoadingView';
+
+interface AnalysisLocationState {
+  sessionId?: string;
+}
 
 export function AnalysisLoadingPage() {
-  const { progress, steps, isCompleted, resetProgress } = useAnalysisProgress();
   const navigate = useNavigate();
-  const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
+  const location = useLocation();
 
-  const [errorCode] = useState<AnalysisErrorCode>('API_UNAVAILABLE');
+  const state = location.state as AnalysisLocationState | null;
+  const sessionId = state?.sessionId ?? null;
+  const isSessionIdMissing = !sessionId;
+
+  const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [retryKey, setRetryKey] = useState(0);
+
+  const completeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleComplete = useCallback(() => {
+    if (completeTimerRef.current) {
+      clearTimeout(completeTimerRef.current);
+    }
+
+    completeTimerRef.current = setTimeout(() => {
+      navigate('/result', {
+        state: { sessionId },
+      });
+    }, 700);
+  }, [navigate, sessionId]);
 
   useEffect(() => {
-    if (pageStatus !== 'loading') return;
-    if (!isCompleted) return;
+    return () => {
+      if (completeTimerRef.current) {
+        clearTimeout(completeTimerRef.current);
+      }
+    };
+  }, []);
 
-    const timer = setTimeout(() => {
-      navigate('/result');
-    }, 700);
+  const handleError = useCallback((message: string) => {
+    setErrorMessage(message);
+    setPageStatus('error');
+  }, []);
 
-    return () => clearTimeout(timer);
-  }, [isCompleted, navigate, pageStatus]);
+  const { progress, steps, resetProgress } = useAnalyzingProgress({
+    sessionId,
+    retryKey,
+    onComplete: handleComplete,
+    onError: handleError,
+  });
 
   const handleRetry = () => {
-    resetProgress?.();
-    setPageStatus('loading');
+    if (isSessionIdMissing) {
+      navigate('/input');
+      return;
+    }
 
-    // TODO: 나중에 여기서 분석 재요청 API 호출
-    // requestAnalysis();
+    resetProgress();
+    setErrorMessage('');
+    setPageStatus('loading');
+    setRetryKey((prev) => prev + 1);
   };
 
   return (
     <PageWrapper>
       {pageStatus === 'error' ? (
-        <AnalysisErrorView errorCode={errorCode} onRetry={handleRetry} />
+        <AnalysisErrorView
+          errorMessage={errorMessage}
+          buttonText={
+            isSessionIdMissing ? '정보 다시 입력하기' : '다시 분석하기'
+          }
+          onRetry={handleRetry}
+        />
       ) : (
         <AnalysisLoadingView progress={progress} steps={steps} />
       )}

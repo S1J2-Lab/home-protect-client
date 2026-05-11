@@ -19,7 +19,6 @@ export function RegistryDetailPage({ registry }: RegistryDetailPageProps) {
       title="등기부등본 전체 분석"
       icon={<FileText size={22} />}
       items={items}
-      direction="grid"
     />
   );
 }
