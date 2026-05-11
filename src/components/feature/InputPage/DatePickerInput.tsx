@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Calendar } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
 
 interface DatePickerInputProps {
@@ -25,6 +26,10 @@ export function DatePickerInput({
         placeholderText={placeholder}
         dateFormat="yyyy-MM-dd"
         minDate={minDate ?? undefined}
+        locale={ko}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
         customInput={
           <InputButton type="button" $isEmpty={!selectedDate}>
             {selectedDate ? format(selectedDate, 'yyyy-MM-dd') : placeholder}
