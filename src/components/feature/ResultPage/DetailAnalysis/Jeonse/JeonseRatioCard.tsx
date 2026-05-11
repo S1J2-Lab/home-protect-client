@@ -25,7 +25,7 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
     recentLow,
   } = jeonseRatio;
 
-  const safeRatio = Math.min(Math.max(ratioPercent, 0), 100);
+  const safeRatio = Math.min(Math.max(ratioPercent ?? 0, 0), 100);
   const notice = getRatioNotice(safeRatio);
 
   return (
@@ -77,14 +77,14 @@ const Body = styled.div`
   gap: 18px;
 `;
 
-const RatioCircle = styled.div<{ ratio: number; variant: RiskLevel }>`
+const RatioCircle = styled.div<{ ratio: number; variant: RiskLevel | null }>`
   width: 112px;
   height: 112px;
   flex-shrink: 0;
   border-radius: 50%;
   background: ${({ theme, ratio, variant }) => `
     conic-gradient(
-      ${theme.colors[TAG_COLORS[variant].color]} ${ratio}%,
+      ${theme.colors[TAG_COLORS[variant ?? 'primary'].color]} ${ratio}%,
       ${theme.colors.borderLight} 0
     )
   `};
@@ -147,13 +147,14 @@ const StrongPrice = styled.span`
   font-weight: 900;
 `;
 
-const Notice = styled.p<{ variant: RiskLevel }>`
+const Notice = styled.p<{ variant: RiskLevel | null }>`
   margin: 18px 0 0;
   padding: 10px 12px;
   border-radius: ${({ theme }) => theme.radius.md};
   background: ${({ theme, variant }) =>
-    theme.colors[TAG_COLORS[variant].background]};
-  color: ${({ theme, variant }) => theme.colors[TAG_COLORS[variant].color]};
+    theme.colors[TAG_COLORS[variant ?? 'primary'].background]};
+  color: ${({ theme, variant }) =>
+    theme.colors[TAG_COLORS[variant ?? 'primary'].color]};
   font-size: 13px;
   font-weight: 600;
 `;
