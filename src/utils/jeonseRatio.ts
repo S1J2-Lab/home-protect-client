@@ -1,11 +1,3 @@
-import type { TagVariant } from '../constants/tag';
-
-export function getRiskLevelLabel(riskLevel: TagVariant) {
-  if (riskLevel === 'danger') return '주의';
-  if (riskLevel === 'caution') return '확인';
-  return '정상';
-}
-
 export function getRatioNotice(ratio: number) {
   if (ratio <= 75) {
     return '전세가율이 안정적인 수준이에요.';

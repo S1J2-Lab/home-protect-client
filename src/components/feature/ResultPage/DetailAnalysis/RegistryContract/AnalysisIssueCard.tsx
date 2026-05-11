@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 import { Tag } from '../../../../common/Tag';
-import type { AnalysisIssueItem } from '../../../../../types/result';
+import type { AnalysisIssueItem } from '../../../../../types/analysisIssue';
+import {
+  getRiskLevelLabel,
+  toTagVariant,
+} from '../../../../../utils/riskMapper';
 
 interface AnalysisIssueCardProps {
   order: number;
@@ -16,7 +20,9 @@ export function AnalysisIssueCard({
   return (
     <IssueCard>
       <IssueHeader>
-        <Tag variant={item.variant}>{item.label}</Tag>
+        <Tag variant={toTagVariant(item.riskLevel)}>
+          {getRiskLevelLabel(item.riskLevel)}
+        </Tag>
         <IssueTitle>
           {order}. {item.title}
         </IssueTitle>
@@ -38,6 +44,7 @@ export function AnalysisIssueCard({
     </IssueCard>
   );
 }
+
 const IssueCard = styled.div`
   padding: 14px;
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
@@ -72,7 +79,9 @@ const InfoBox = styled.div<{
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 10px;
+
+  padding: ${({ isLeftColumn }) =>
+    isLeftColumn ? '0 14px 0 0' : '0 0 0 14px'};
 
   ${({ isLeftColumn, theme }) =>
     isLeftColumn &&
@@ -84,6 +93,8 @@ const InfoBox = styled.div<{
     showRowDivider &&
     isTopRow &&
     `
+      padding-bottom: 12px;
+      margin-bottom: 12px;
       border-bottom: 1px solid ${theme.colors.borderLight};
     `}
 `;

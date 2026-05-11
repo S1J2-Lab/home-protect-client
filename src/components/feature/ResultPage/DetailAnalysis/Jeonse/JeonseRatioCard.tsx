@@ -1,39 +1,42 @@
 import styled from '@emotion/styled';
 import { BarChart3 } from 'lucide-react';
-import { Tag } from '../../../../common/Tag';
-import { TAG_COLORS, type TagVariant } from '../../../../../constants/tag';
-import {
-  formatPrice,
-  getRatioNotice,
-  getRiskLevelLabel,
-} from '../../../../../utils/jeonseRatio';
 import { AnalysisCard } from '../../../../common/AnalysisCard';
+import { Tag } from '../../../../common/Tag';
+import { TAG_COLORS } from '../../../../../constants/tag';
+import type { JeonseRatioData } from '../../../../../types/jeonse';
+import type { RiskLevel } from '../../../../../types/risk';
+import { formatPrice, getRatioNotice } from '../../../../../utils/jeonseRatio';
+import {
+  getRiskLevelLabel,
+  toTagVariant,
+} from '../../../../../utils/riskMapper';
 
 interface JeonseRatioCardProps {
-  ratio: number;
-  riskLevel: TagVariant;
-  deposit: number;
-  recentPrice: number;
-  averagePrice: number;
-  lowestPrice: number;
+  jeonseRatio: JeonseRatioData;
 }
 
-export function JeonseRatioCard({
-  ratio,
-  riskLevel,
-  deposit,
-  recentPrice,
-  averagePrice,
-  lowestPrice,
-}: JeonseRatioCardProps) {
-  const safeRatio = Math.min(Math.max(ratio, 0), 100);
+export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
+  const {
+    ratioPercent,
+    riskLevel,
+    convertedDeposit,
+    recentHigh,
+    average,
+    recentLow,
+  } = jeonseRatio;
+
+  const safeRatio = Math.min(Math.max(ratioPercent, 0), 100);
   const notice = getRatioNotice(safeRatio);
 
   return (
     <AnalysisCard
       icon={<BarChart3 />}
       title="전세가율"
-      right={<Tag variant={riskLevel}>{getRiskLevelLabel(riskLevel)}</Tag>}
+      right={
+        <Tag variant={toTagVariant(riskLevel)}>
+          {getRiskLevelLabel(riskLevel)}
+        </Tag>
+      }
     >
       <Body>
         <RatioCircle ratio={safeRatio} variant={riskLevel}>
@@ -43,19 +46,22 @@ export function JeonseRatioCard({
         <PriceList>
           <PriceRow>
             <PriceLabel>보증금</PriceLabel>
-            <StrongPrice>{formatPrice(deposit)}</StrongPrice>
+            <StrongPrice>{formatPrice(convertedDeposit)}</StrongPrice>
           </PriceRow>
+
           <PriceRow>
             <PriceLabel>최근 시세</PriceLabel>
-            <PriceValue>{formatPrice(recentPrice)}</PriceValue>
+            <PriceValue>{formatPrice(recentHigh)}</PriceValue>
           </PriceRow>
+
           <PriceRow>
             <PriceLabel>평균 시세</PriceLabel>
-            <PriceValue>{formatPrice(averagePrice)}</PriceValue>
+            <PriceValue>{formatPrice(average)}</PriceValue>
           </PriceRow>
+
           <PriceRow>
             <PriceLabel>최저 시세</PriceLabel>
-            <PriceValue>{formatPrice(lowestPrice)}</PriceValue>
+            <PriceValue>{formatPrice(recentLow)}</PriceValue>
           </PriceRow>
         </PriceList>
       </Body>
@@ -71,7 +77,7 @@ const Body = styled.div`
   gap: 18px;
 `;
 
-const RatioCircle = styled.div<{ ratio: number; variant: TagVariant }>`
+const RatioCircle = styled.div<{ ratio: number; variant: RiskLevel }>`
   width: 112px;
   height: 112px;
   flex-shrink: 0;
@@ -141,7 +147,7 @@ const StrongPrice = styled.span`
   font-weight: 900;
 `;
 
-const Notice = styled.p<{ variant: TagVariant }>`
+const Notice = styled.p<{ variant: RiskLevel }>`
   margin: 18px 0 0;
   padding: 10px 12px;
   border-radius: ${({ theme }) => theme.radius.md};

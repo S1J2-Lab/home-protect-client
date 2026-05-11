@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { AnalysisIssueCard } from './AnalysisIssueCard';
-import type { AnalysisIssueItem } from '../../../../../types/result';
-
+import type { AnalysisIssueItem } from '../../../../../types/analysisIssue';
 interface AnalysisIssueListProps {
   items: AnalysisIssueItem[];
   showRowDivider?: boolean;

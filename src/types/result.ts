@@ -1,29 +1,18 @@
-// export type IssueVariant = 'danger' | 'warning' | 'success';
+import type { JeonseRatioData } from './jeonse';
+import type { RegistryData } from './registry';
+import type { BuildingData } from './building';
+import type { ContractData } from './contract';
 
-//export type IssueVariant = 'danger' | 'caution' | 'safe'; //백엔드 json 구조
-
-import type { TagVariant } from '../constants/tag';
-
-export interface AnalysisIssueDetail {
-  label: string;
-  content: string;
+export interface ResultData {
+  address: string;
+  analyzedAt: string;
+  jeonseRatio: JeonseRatioData;
+  registry: RegistryData;
+  building: BuildingData;
+  contract: ContractData;
 }
 
-export interface AnalysisIssueItem {
-  id: string;
-  title: string;
-  label: string;
-  variant: TagVariant;
-  details: AnalysisIssueDetail[];
-}
-
-//export type BuildingLevel = 'danger' | 'caution' | 'safe';
-
-export interface BuildingData {
-  level: TagVariant;
-  primaryUse: string;
-  isResidential: boolean;
-  violation: boolean;
-  approvedDate: string;
-  redevelopmentZone: boolean;
+export interface ResultResponse {
+  status: 'success';
+  data: ResultData;
 }

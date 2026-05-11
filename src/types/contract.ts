@@ -1,7 +1,6 @@
-export type ContractClauseLevel = 'danger' | 'caution';
-
+import type { RiskLevel } from './risk';
 export interface ContractClause {
-  level: ContractClauseLevel;
+  level: RiskLevel;
   title: string;
   originalText: string;
   legalIssue: string;

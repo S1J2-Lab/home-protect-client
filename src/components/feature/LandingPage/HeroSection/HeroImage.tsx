@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import heroImg from '../../../assets/hero-house-contract.png';
+import heroImg from '../../../../assets/hero-house-contract.png';
 
 export function HeroImage() {
   return (
