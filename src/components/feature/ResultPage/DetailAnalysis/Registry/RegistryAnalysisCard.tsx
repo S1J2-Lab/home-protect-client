@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { FileText } from 'lucide-react';
 import { AnalysisCard } from '../../../../common/AnalysisCard';
 import { AnalysisIssueList } from '../RegistryContract/AnalysisIssueList';
+import type { RegistryData } from '../../../../../types/registry';
 import { getRegistryAnalysisIssues } from '../../../../../utils/registryAnalysis';
-import type { RegistryData } from '../../../../../utils/registrySummary';
 
 const PREVIEW_COUNT = 2;
 
@@ -43,5 +43,4 @@ const DetailButton = styled.button`
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transform: translateY(9px);
 `;

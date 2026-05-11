@@ -1,18 +1,5 @@
+import type { RegistryData } from '../types/registry';
 import { formatPrice } from './jeonseRatio';
-
-interface Mortgage {
-  bank: string;
-  amount: number;
-}
-
-export interface RegistryData {
-  mortgageCount: number;
-  mortgages: Mortgage[];
-  totalMortgage: number;
-  trustWarning: boolean;
-  priorLease: boolean;
-  ownershipChangeRecent: boolean;
-}
 
 export interface RegistrySummaryItem {
   title: string;

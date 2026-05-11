@@ -1,5 +1,4 @@
-import type { BuildingData } from '../types/result';
-
+import type { BuildingData } from '../types/building';
 interface BuildingInfoItem {
   id: string;
   text: string;

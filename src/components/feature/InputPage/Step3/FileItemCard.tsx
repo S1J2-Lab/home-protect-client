@@ -60,7 +60,7 @@ export function FileItemCard({
             {status === 'ok' ? (
               <Tag variant="safe">정상</Tag>
             ) : (
-              <WarningBadge>주의 필요</WarningBadge>
+              <WarningBadge variant="danger">주의 필요</WarningBadge>
             )}
             <Separator>·</Separator>
             <FileSize>{formatSize(size)}</FileSize>
@@ -180,16 +180,8 @@ const SubRow = styled.div`
   gap: 6px;
 `;
 
-const WarningBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  height: 22px;
-  padding: 0 9px;
-  border-radius: ${({ theme }) => theme.radius.full};
-  font-size: 11px;
-  font-weight: 600;
+const WarningBadge = styled(Tag)`
   background: ${({ theme }) => theme.colors.dangerLight};
-  color: ${({ theme }) => theme.colors.danger};
 `;
 
 const Separator = styled.span`

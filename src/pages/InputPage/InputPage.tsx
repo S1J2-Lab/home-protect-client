@@ -20,6 +20,13 @@ const INITIAL_FILES: FileMap = {
   contract: [],
 };
 
+type OrderConfirmMap = Record<UploaderKey, boolean>;
+
+const INITIAL_ORDER_CONFIRMED: OrderConfirmMap = {
+  registry: false,
+  contract: false,
+};
+
 export function InputPage() {
   const navigate = useNavigate();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -31,6 +38,9 @@ export function InputPage() {
   const [files, setFiles] = useState<FileMap>(INITIAL_FILES);
   const [isMaskingConfirmed, setIsMaskingConfirmed] = useState(false);
   const [isOwnerVerifyConfirmed, setIsOwnerVerifyConfirmed] = useState(false);
+  const [orderConfirmed, setOrderConfirmed] = useState<OrderConfirmMap>(
+    INITIAL_ORDER_CONFIRMED,
+  );
 
   const currentStep = INPUT_STEPS[currentStepIndex];
 
@@ -39,8 +49,16 @@ export function InputPage() {
   const hasWarningFiles = Object.values(files).some((list) =>
     list.some((f) => f.status === 'warning'),
   );
+  const hasMultiPageFiles = Object.values(files).some(
+    (list) => list.length > 1,
+  );
+  const isOrderConfirmed = Object.entries(orderConfirmed).every(
+    ([key, confirmed]) => files[key as UploaderKey].length <= 1 || confirmed,
+  );
   const isUploadStepNextDisabled =
-    (hasWarningFiles && !isMaskingConfirmed) || !isOwnerVerifyConfirmed;
+    (hasWarningFiles && !isMaskingConfirmed) ||
+    !isOwnerVerifyConfirmed ||
+    (hasMultiPageFiles && !isOrderConfirmed);
 
   const handleNext = () => {
     if (currentStep === 'upload') {
@@ -57,6 +75,10 @@ export function InputPage() {
   const handleFilesChange = (key: UploaderKey, next: UploadedFile[]) => {
     if (next.length > files[key].length) setIsMaskingConfirmed(false);
     setFiles((prev) => ({ ...prev, [key]: next }));
+  };
+
+  const handleOrderConfirmChange = (key: UploaderKey, confirmed: boolean) => {
+    setOrderConfirmed((prev) => ({ ...prev, [key]: confirmed }));
   };
 
   return (
@@ -122,6 +144,7 @@ export function InputPage() {
           <UploadSection
             files={files}
             onFilesChange={handleFilesChange}
+            onOrderConfirmChange={handleOrderConfirmChange}
             isMaskingConfirmed={isMaskingConfirmed}
             onMaskingConfirmChange={setIsMaskingConfirmed}
             isOwnerVerifyConfirmed={isOwnerVerifyConfirmed}

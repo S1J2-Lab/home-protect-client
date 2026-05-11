@@ -5,6 +5,7 @@ import { useAnalyzingProgress } from '../../hooks/useAnalyzingProgress';
 import type { AnalysisPageStatus } from '../../types/analysis';
 import { AnalysisErrorView } from './AnalysisErrorView';
 import { AnalysisLoadingView } from './AnalysisLoadingView';
+import { saveAnalysisSessionId } from '../../utils/analysisStorage';
 
 interface AnalysisLocationState {
   sessionId?: string;
@@ -30,6 +31,10 @@ export function AnalysisLoadingPage() {
     }
 
     completeTimerRef.current = setTimeout(() => {
+      if (sessionId) {
+        saveAnalysisSessionId(sessionId);
+      }
+
       navigate('/result', {
         state: { sessionId },
       });

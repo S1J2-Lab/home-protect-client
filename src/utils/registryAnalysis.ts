@@ -1,5 +1,35 @@
-import type { AnalysisIssueItem } from '../types/result';
-import { getRegistrySummaryItems, type RegistryData } from './registrySummary';
+import type { AnalysisIssueItem } from '../types/analysisIssue';
+import type { RegistryData } from '../types/registry';
+import type { RiskLevel } from '../types/risk';
+import {
+  getRegistrySummaryItems,
+  type RegistrySummaryItem,
+} from './registrySummary';
+
+export function getRegistryRiskLevel(registry: RegistryData): RiskLevel {
+  if (registry.trustWarning || registry.priorLease) return 'danger';
+
+  if (registry.ownershipChangeRecent || registry.mortgageCount > 0) {
+    return 'caution';
+  }
+
+  return 'safe';
+}
+
+function mapRegistryItems(
+  items: RegistrySummaryItem[],
+  riskLevel: RiskLevel,
+): AnalysisIssueItem[] {
+  return items.map((item, index) => ({
+    id: `${riskLevel}-${index}-${item.title}`,
+    title: item.title,
+    riskLevel,
+    details: [
+      { label: '설명', content: item.description },
+      { label: '대응 방법', content: item.action },
+    ],
+  }));
+}
 
 export function getRegistryAnalysisIssues(
   registry: RegistryData,
@@ -8,35 +38,8 @@ export function getRegistryAnalysisIssues(
     getRegistrySummaryItems(registry);
 
   return [
-    ...dangerItems.map((item, index) => ({
-      id: `danger-${index}-${item.title}`,
-      title: item.title,
-      label: '주의 필요',
-      variant: 'danger' as const,
-      details: [
-        { label: '쉬운 설명', content: item.description },
-        { label: '대응책', content: item.action },
-      ],
-    })),
-    ...cautionItems.map((item, index) => ({
-      id: `caution-${index}-${item.title}`,
-      title: item.title,
-      label: '확인 필요',
-      variant: 'caution' as const,
-      details: [
-        { label: '쉬운 설명', content: item.description },
-        { label: '대응책', content: item.action },
-      ],
-    })),
-    ...safeItems.map((item, index) => ({
-      id: `safe-${index}-${item.title}`,
-      title: item.title,
-      label: '정상',
-      variant: 'safe' as const,
-      details: [
-        { label: '쉬운 설명', content: item.description },
-        { label: '대응책', content: item.action },
-      ],
-    })),
+    ...mapRegistryItems(dangerItems, 'danger'),
+    ...mapRegistryItems(cautionItems, 'caution'),
+    ...mapRegistryItems(safeItems, 'safe'),
   ];
 }

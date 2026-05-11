@@ -1,21 +1,38 @@
 import { useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ScrollText } from 'lucide-react';
 import { AnalysisDetailSection } from '../../components/feature/ResultPage/DetailAnalysis/RegistryContract/AnalysisDetailSection';
 import type { ContractData } from '../../types/contract';
 import { getContractAnalysisIssues } from '../../utils/contractAnalysis';
+import { getAnalysisResultFromStorage } from '../../utils/analysisStorage';
 
-interface ContractDetailPageProps {
-  contract: ContractData;
+interface LocationState {
+  contract?: ContractData;
 }
 
-export function ContractDetailPage({ contract }: ContractDetailPageProps) {
-  const items = useMemo(() => getContractAnalysisIssues(contract), [contract]);
+export function ContractDetailPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const sectionKey = JSON.stringify(contract);
+  const contract =
+    (location.state as LocationState | null)?.contract ??
+    getAnalysisResultFromStorage()?.contract;
+
+  const items = useMemo(
+    () => (contract ? getContractAnalysisIssues(contract) : []),
+    [contract],
+  );
+
+  if (!contract) {
+    return (
+      <button type="button" onClick={() => navigate('/result')}>
+        결과 페이지로 돌아가기
+      </button>
+    );
+  }
 
   return (
     <AnalysisDetailSection
-      key={sectionKey}
       title="임대차계약서 전체 분석"
       icon={<ScrollText size={22} />}
       items={items}

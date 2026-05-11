@@ -1,10 +1,5 @@
-import type { AnalysisIssueItem } from '../types/result';
-import type { ContractClause, ContractData } from '../types/contract';
-
-function getContractIssueLabel(level: ContractClause['level']) {
-  if (level === 'danger') return '주의 필요';
-  return '확인 필요';
-}
+import type { AnalysisIssueItem } from '../types/analysisIssue';
+import type { ContractData } from '../types/contract';
 
 export function getContractAnalysisIssues(
   contract: ContractData,
@@ -14,8 +9,7 @@ export function getContractAnalysisIssues(
   return clauses.map((clause, index) => ({
     id: `${clause.level}-${index}-${clause.title}`,
     title: clause.title,
-    label: getContractIssueLabel(clause.level),
-    variant: clause.level,
+    riskLevel: clause.level,
     details: [
       { label: '특약 원문', content: clause.originalText },
       { label: '법률 설명', content: clause.legalIssue },

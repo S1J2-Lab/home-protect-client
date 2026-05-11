@@ -35,7 +35,7 @@ export const FEATURE_ITEMS: FeatureItem[] = [
     Icon: ListChecks,
   },
   {
-    title: '위험도 진단',
+    title: '종합 확인',
     desc: 'AI가 종합 판단해\n주의사항을 알려드려요.',
     Icon: ShieldAlert,
   },

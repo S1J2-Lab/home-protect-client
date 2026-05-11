@@ -1,23 +1,82 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { ResultAddressCard } from '../../components/feature/ResultPage/ResultAddressCard';
 import { ResultTabs } from '../../components/feature/ResultPage/ResultTabs';
 import { DetailAnalysisSection } from './DetailAnalysisSection';
 import { ChecklistSection } from './ChecklistSection';
+import type { ResultData } from '../../types/result';
+import { useLocation } from 'react-router-dom';
+import { getAnalysisResult } from '../../api/result';
+import { getApiErrorMessage, type ApiError } from '../../api/error';
+import {
+  getAnalysisSessionId,
+  saveAnalysisResult,
+} from '../../utils/analysisStorage';
 
 type ResultTab = 'detail' | 'checklist' | 'caution';
 
 export function ResultPage() {
+  const location = useLocation();
+  const sessionId = location.state?.sessionId ?? getAnalysisSessionId();
+
   const [activeTab, setActiveTab] = useState<ResultTab>('detail');
+  const [result, setResult] = useState<ResultData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (!sessionId) {
+      setErrorMessage('분석 세션 정보가 없어 결과를 불러오지 못했어요');
+      setIsLoading(false);
+      return;
+    }
+    const fetchResult = async () => {
+      try {
+        const data = await getAnalysisResult(sessionId);
+
+        setResult(data);
+        saveAnalysisResult(data);
+      } catch (error) {
+        setErrorMessage(getApiErrorMessage(error as ApiError));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResult();
+  }, [sessionId]);
+
+  if (isLoading) {
+    return (
+      <Page>
+        <Section>
+          <SectionTitle>결과를 불러오는 중이에요</SectionTitle>
+          <Description>잠시만 기다려주세요.</Description>
+        </Section>
+      </Page>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <Page>
+        <Section>
+          <SectionTitle>결과를 불러오지 못했어요</SectionTitle>
+          <Description>{errorMessage}</Description>
+        </Section>
+      </Page>
+    );
+  }
+  if (!result) return null;
 
   return (
     <Page>
-      <ResultAddressCard address="서울특별시 강남구 테헤란로 123" />
+      <ResultAddressCard address={result.address} />
 
       <ResultTabs activeTab={activeTab} onChangeTab={setActiveTab} />
 
-      {activeTab === 'detail' && <DetailAnalysisSection />}
+      {activeTab === 'detail' && <DetailAnalysisSection result={result} />}
       {activeTab === 'checklist' && <ChecklistSection />}
       {activeTab === 'caution' && <CautionSection />}
     </Page>

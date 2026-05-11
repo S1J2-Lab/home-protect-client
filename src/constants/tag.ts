@@ -5,7 +5,6 @@ export const TAG_COLORS = {
     color: 'primaryDark',
     background: 'primaryLight',
   },
-
   safe: {
     color: 'success',
     background: 'successBg',

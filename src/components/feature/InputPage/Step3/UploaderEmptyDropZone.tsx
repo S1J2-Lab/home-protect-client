@@ -17,7 +17,7 @@ export function UploaderEmptyDropZone({ onClick }: UploaderEmptyDropZoneProps) {
         aria-hidden="true"
       />
       <HintText>여기를 눌러 파일을 업로드하세요</HintText>
-      <SubHint>PDF · 여러 장 가능</SubHint>
+      <SubHint>PDF 또는 JPG · PNG로 여러 장 업로드 후 순서 조정 가능</SubHint>
     </DropZone>
   );
 }

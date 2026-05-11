@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { AnalysisCard } from '../../../../common/AnalysisCard';
 import { AnalysisIssueList } from './AnalysisIssueList';
 import { useIntersectionObserver } from '../../../../../hooks/useIntersectionObserver';
-import type { AnalysisIssueItem } from '../../../../../types/result';
+import type { AnalysisIssueItem } from '../../../../../types/analysisIssue';
 
 const INITIAL_VISIBLE_COUNT = 5;
 const LOAD_MORE_COUNT = 5;
