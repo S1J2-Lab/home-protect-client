@@ -23,50 +23,72 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
     recentHigh,
     average,
     recentLow,
+    sampleCount,
   } = jeonseRatio;
 
+  const hasMarketData = sampleCount > 0;
   const safeRatio = Math.min(Math.max(ratioPercent ?? 0, 0), 100);
-  const notice = getRatioNotice(safeRatio);
+  const notice = hasMarketData
+    ? getRatioNotice(safeRatio)
+    : '최근 거래량이 없어 전세가율을 계산하기 어려워요. 주변 시세를 추가로 확인해 주세요.';
 
   return (
     <AnalysisCard
       icon={<BarChart3 />}
       title="전세가율"
       right={
-        <Tag variant={toTagVariant(riskLevel)}>
-          {getRiskLevelLabel(riskLevel)}
-        </Tag>
+        hasMarketData ? (
+          <Tag variant={toTagVariant(riskLevel)}>
+            {getRiskLevelLabel(riskLevel)}
+          </Tag>
+        ) : null
       }
     >
-      <Body>
-        <RatioCircle ratio={safeRatio} variant={riskLevel}>
-          <RatioText>{safeRatio}%</RatioText>
-        </RatioCircle>
+      {hasMarketData ? (
+        <Body>
+          <RatioCircle ratio={safeRatio} variant={riskLevel}>
+            <RatioText>{safeRatio}%</RatioText>
+          </RatioCircle>
 
-        <PriceList>
+          <PriceList>
+            <PriceRow>
+              <PriceLabel>보증금</PriceLabel>
+              <StrongPrice>{formatPrice(convertedDeposit)}</StrongPrice>
+            </PriceRow>
+
+            <PriceRow>
+              <PriceLabel>최근 시세</PriceLabel>
+              <PriceValue>{formatPrice(recentHigh)}</PriceValue>
+            </PriceRow>
+
+            <PriceRow>
+              <PriceLabel>평균 시세</PriceLabel>
+              <PriceValue>{formatPrice(average)}</PriceValue>
+            </PriceRow>
+
+            <PriceRow>
+              <PriceLabel>최저 시세</PriceLabel>
+              <PriceValue>{formatPrice(recentLow)}</PriceValue>
+            </PriceRow>
+          </PriceList>
+        </Body>
+      ) : (
+        <EmptyState>
           <PriceRow>
             <PriceLabel>보증금</PriceLabel>
             <StrongPrice>{formatPrice(convertedDeposit)}</StrongPrice>
           </PriceRow>
+        </EmptyState>
+      )}
 
-          <PriceRow>
-            <PriceLabel>최근 시세</PriceLabel>
-            <PriceValue>{formatPrice(recentHigh)}</PriceValue>
-          </PriceRow>
-
-          <PriceRow>
-            <PriceLabel>평균 시세</PriceLabel>
-            <PriceValue>{formatPrice(average)}</PriceValue>
-          </PriceRow>
-
-          <PriceRow>
-            <PriceLabel>최저 시세</PriceLabel>
-            <PriceValue>{formatPrice(recentLow)}</PriceValue>
-          </PriceRow>
-        </PriceList>
-      </Body>
-
-      <Notice variant={riskLevel}>{notice}</Notice>
+      {hasMarketData ? (
+        <Notice variant={riskLevel}>{notice}</Notice>
+      ) : (
+        <EmptyNotice>
+          최근 거래량이 없어 전세가율을 계산하기 어려워요. 주변 시세를 추가로
+          확인해 주세요.
+        </EmptyNotice>
+      )}
     </AnalysisCard>
   );
 }
@@ -139,12 +161,14 @@ const PriceValue = styled.span`
   color: ${({ theme }) => theme.colors.text};
   font-size: 12px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 `;
 
 const StrongPrice = styled.span`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 13px;
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
 `;
 
 const Notice = styled.p<{ variant: RiskLevel | null }>`
@@ -157,4 +181,20 @@ const Notice = styled.p<{ variant: RiskLevel | null }>`
     theme.colors[TAG_COLORS[variant ?? 'primary'].color]};
   font-size: 13px;
   font-weight: 600;
+`;
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const EmptyNotice = styled.p`
+  margin: 0;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
