@@ -29,6 +29,7 @@ export function ResultPdfDetailAnalysisSection({
           title="등기부등본 전체 분석"
           icon={<FileText size={22} />}
           items={registryItems}
+          emptyMessage="확인이 필요한 등기부등본 정보가 없어요."
         />
       </PdfBorderSection>
 
@@ -38,6 +39,7 @@ export function ResultPdfDetailAnalysisSection({
           icon={<ScrollText size={22} />}
           items={contractItems}
           showRowDivider
+          emptyMessage="확인이 필요한 임대차계약서 정보가 없어요."
         />
       </PdfBorderSection>
 

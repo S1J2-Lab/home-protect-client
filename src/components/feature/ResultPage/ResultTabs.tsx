@@ -34,6 +34,7 @@ const TabCard = styled.div`
   border-radius: ${({ theme }) => theme.radius.xl};
   box-shadow: ${({ theme }) => theme.shadow.card};
   overflow: hidden;
+  margin-bottom: 3px;
 `;
 
 const TabButton = styled.button<{ active: boolean }>`

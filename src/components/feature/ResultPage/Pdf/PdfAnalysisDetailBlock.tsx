@@ -10,6 +10,7 @@ interface PdfAnalysisDetailBlockProps {
   icon: ReactNode;
   items: AnalysisIssueItem[];
   showRowDivider?: boolean;
+  emptyMessage?: string;
 }
 
 export function PdfAnalysisDetailBlock({
@@ -17,12 +18,15 @@ export function PdfAnalysisDetailBlock({
   icon,
   items,
   showRowDivider = false,
+  emptyMessage = '확인이 필요한 분석 내역이 없어요.',
 }: PdfAnalysisDetailBlockProps) {
+  const hasItems = items.length > 0;
+
   return (
     <PdfDetailBlock>
       <PdfTitleSection data-pdf-title-section>
         <AnalysisCard icon={icon} title={title}>
-          <></>
+          {hasItems ? <></> : <EmptyMessage>{emptyMessage}</EmptyMessage>}
         </AnalysisCard>
       </PdfTitleSection>
 
@@ -54,4 +58,15 @@ const PdfIssueSection = styled.div`
 
 const PdfIssueInner = styled.div`
   padding: 0 24px;
+`;
+
+const EmptyMessage = styled.p`
+  margin: 0;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
