@@ -1,24 +1,24 @@
-import { useEffect } from 'react';
-import styled from '@emotion/styled';
-
 import { Card } from '../../components/common/Card';
 import { useAddressSearch } from '../../hooks/useAddressSearch';
 import type { Address } from '../../types/address';
 import { AddressSearchInput } from '../../components/feature/InputPage/AddressSection/AddressSearchInput';
 import { AddressSearchResult } from '../../components/feature/InputPage/AddressSection/AddressSearchResult';
+import styled from '@emotion/styled';
 
 interface AddressSectionProps {
   selectedAddress: Address | null;
-  onSelectAddress: (address: Address) => void;
+  onSelectAddress: (address: Address | null) => void;
+  keyword: string;
+  onChangeKeyword: (keyword: string) => void;
 }
 
 export function AddressSection({
   selectedAddress,
   onSelectAddress,
+  keyword,
+  onChangeKeyword,
 }: AddressSectionProps) {
   const {
-    keyword,
-    setKeyword,
     isSearched,
     currentAddresses,
     hasNextPage,
@@ -27,17 +27,19 @@ export function AddressSection({
     isLoading,
     isFetchingMore,
     errorMessage,
-  } = useAddressSearch();
+  } = useAddressSearch(keyword);
 
-  useEffect(() => {
-    if (selectedAddress) {
-      setKeyword(selectedAddress.roadAddress);
+  const handleChangeKeyword = (nextKeyword: string) => {
+    onChangeKeyword(nextKeyword);
+
+    if (selectedAddress && nextKeyword !== selectedAddress.roadAddress) {
+      onSelectAddress(null);
     }
-  }, [selectedAddress, setKeyword]);
+  };
 
   const handleSelectAddress = (address: Address) => {
     onSelectAddress(address);
-    setKeyword(address.roadAddress);
+    onChangeKeyword(address.roadAddress);
   };
 
   return (
@@ -46,7 +48,7 @@ export function AddressSection({
 
       <AddressSearchInput
         keyword={keyword}
-        onChangeKeyword={setKeyword}
+        onChangeKeyword={handleChangeKeyword}
         onSearch={handleSearch}
       />
 

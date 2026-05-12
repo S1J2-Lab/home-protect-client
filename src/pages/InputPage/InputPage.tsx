@@ -63,7 +63,7 @@ export function InputPage() {
   >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-
+  const [addressKeyword, setAddressKeyword] = useState('');
   useEffect(() => {
     clearAnalysisStorage();
   }, []);
@@ -175,6 +175,8 @@ export function InputPage() {
           <AddressSection
             selectedAddress={selectedAddress}
             onSelectAddress={setSelectedAddress}
+            keyword={addressKeyword}
+            onChangeKeyword={setAddressKeyword}
           />
 
           <ButtonArea>

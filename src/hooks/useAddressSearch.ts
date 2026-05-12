@@ -7,8 +7,7 @@ import type { ApiError } from '../api/error';
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
 
-export function useAddressSearch() {
-  const [keyword, setKeyword] = useState('');
+export function useAddressSearch(keyword: string) {
   const [searchedKeyword, setSearchedKeyword] = useState('');
   const [currentAddresses, setCurrentAddresses] = useState<Address[]>([]);
   const [currentPage, setCurrentPage] = useState(FIRST_PAGE);
@@ -67,8 +66,6 @@ export function useAddressSearch() {
   }, [currentPage, hasNextPage, isFetchingMore, isLoading, searchedKeyword]);
 
   return {
-    keyword,
-    setKeyword,
     isSearched,
     currentAddresses,
     hasNextPage,
