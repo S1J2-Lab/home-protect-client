@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { House, ChevronLeft } from 'lucide-react';
 
 import { LandingPage } from '../pages/LandingPage/LandingPage';
@@ -12,114 +12,132 @@ import { Layout } from '../layout/Layout';
 import { Header } from '../components/common/Header';
 import { StepIndicator } from '../components/common/StepIndicator';
 import { Button } from '../components/common/Button';
+import { useEffect } from 'react';
+
+import logoImage from '../assets/logo.png';
+import { HeaderLogo } from '../components/common/HeaderLogo';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export function AppRouter() {
   const navigate = useNavigate();
 
   return (
-    <Routes>
-      <Route
-        element={
-          <Layout
-            header={
-              <Header
-                title="지켜줘홈즈"
-                left={
-                  <Button
-                    variant="ghost"
-                    tone="blue"
-                    size="md"
-                    iconStart={<House />}
-                    aria-label="홈"
-                    onClick={() => navigate('/')}
-                  />
-                }
-              />
-            }
-            noPadding
-          />
-        }
-      >
-        <Route path="/" element={<LandingPage />} />
-      </Route>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route
+          element={
+            <Layout
+              header={
+                <Header
+                  title="지켜줘홈즈"
+                  logo={<HeaderLogo src={logoImage} alt="지켜줘홈즈 로고" />}
+                  // left={
+                  //   <Button
+                  //     variant="ghost"
+                  //     tone="blue"
+                  //     size="md"
+                  //     iconStart={<House />}
+                  //     aria-label="홈"
+                  //     onClick={() => navigate('/')}
+                  //   />
+                  // }
+                />
+              }
+              noPadding
+            />
+          }
+        >
+          <Route path="/" element={<LandingPage />} />
+        </Route>
 
-      <Route
-        element={
-          <Layout
-            header={
-              <Header
-                title="정보 입력"
-                left={
-                  <Button
-                    variant="ghost"
-                    tone="black"
-                    size="md"
-                    iconStart={<ChevronLeft />}
-                    aria-label="이전"
-                    onClick={() => navigate(-1)}
-                  />
-                }
-              />
-            }
-            stepIndicator={<StepIndicator currentStep={1} totalSteps={3} />}
-          />
-        }
-      >
-        <Route path="/input" element={<InputPage />} />
-      </Route>
+        <Route
+          element={
+            <Layout
+              header={
+                <Header
+                  title="정보 입력"
+                  left={
+                    <Button
+                      variant="ghost"
+                      tone="black"
+                      size="md"
+                      iconStart={<ChevronLeft />}
+                      aria-label="이전"
+                      onClick={() => navigate(-1)}
+                    />
+                  }
+                />
+              }
+              stepIndicator={<StepIndicator currentStep={1} totalSteps={3} />}
+            />
+          }
+        >
+          <Route path="/input" element={<InputPage />} />
+        </Route>
 
-      <Route
-        element={
-          <Layout
-            header={
-              <Header
-                title="계약 분석 중"
-                left={
-                  <Button
-                    variant="ghost"
-                    tone="blue"
-                    size="md"
-                    iconStart={<House />}
-                    aria-label="홈"
-                    onClick={() => navigate('/')}
-                  />
-                }
-              />
-            }
-            stepIndicator={<StepIndicator currentStep={2} totalSteps={3} />}
-            noPadding
-          />
-        }
-      >
-        <Route path="/analyze" element={<AnalysisLoadingPage />} />
-      </Route>
+        <Route
+          element={
+            <Layout
+              header={
+                <Header
+                  title="계약 분석 중"
+                  left={
+                    <Button
+                      variant="ghost"
+                      tone="blue"
+                      size="md"
+                      iconStart={<House />}
+                      aria-label="홈"
+                      onClick={() => navigate('/')}
+                    />
+                  }
+                />
+              }
+              stepIndicator={<StepIndicator currentStep={2} totalSteps={3} />}
+              noPadding
+            />
+          }
+        >
+          <Route path="/analyze" element={<AnalysisLoadingPage />} />
+        </Route>
 
-      <Route
-        element={
-          <Layout
-            header={
-              <Header
-                title="분석 결과"
-                left={
-                  <Button
-                    variant="ghost"
-                    tone="black"
-                    size="md"
-                    iconStart={<ChevronLeft />}
-                    aria-label="이전"
-                    onClick={() => navigate(-1)}
-                  />
-                }
-              />
-            }
-            stepIndicator={<StepIndicator currentStep={3} totalSteps={3} />}
-          />
-        }
-      >
-        <Route path="/result" element={<ResultPage />} />
-        <Route path="/result/registry" element={<RegistryDetailPage />} />
-        <Route path="/result/contract" element={<ContractDetailPage />} />
-      </Route>
-    </Routes>
+        <Route
+          element={
+            <Layout
+              header={
+                <Header
+                  title="분석 결과"
+                  left={
+                    <Button
+                      variant="ghost"
+                      tone="black"
+                      size="md"
+                      iconStart={<ChevronLeft />}
+                      aria-label="이전"
+                      onClick={() => navigate(-1)}
+                    />
+                  }
+                />
+              }
+              stepIndicator={<StepIndicator currentStep={3} totalSteps={3} />}
+            />
+          }
+        >
+          <Route path="/result" element={<ResultPage />} />
+          <Route path="/result/registry" element={<RegistryDetailPage />} />
+          <Route path="/result/contract" element={<ContractDetailPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
