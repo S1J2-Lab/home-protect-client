@@ -7,16 +7,18 @@ import styled from '@emotion/styled';
 
 interface AddressSectionProps {
   selectedAddress: Address | null;
-  onSelect: (address: Address) => void;
+  onSelectAddress: (address: Address | null) => void;
+  keyword: string;
+  onChangeKeyword: (keyword: string) => void;
 }
 
 export function AddressSection({
   selectedAddress,
-  onSelect,
+  onSelectAddress,
+  keyword,
+  onChangeKeyword,
 }: AddressSectionProps) {
   const {
-    keyword,
-    setKeyword,
     isSearched,
     currentAddresses,
     hasNextPage,
@@ -25,11 +27,19 @@ export function AddressSection({
     isLoading,
     isFetchingMore,
     errorMessage,
-  } = useAddressSearch();
+  } = useAddressSearch(keyword);
+
+  const handleChangeKeyword = (nextKeyword: string) => {
+    onChangeKeyword(nextKeyword);
+
+    if (selectedAddress && nextKeyword !== selectedAddress.roadAddress) {
+      onSelectAddress(null);
+    }
+  };
 
   const handleSelectAddress = (address: Address) => {
-    onSelect(address);
-    setKeyword(address.roadAddress);
+    onSelectAddress(address);
+    onChangeKeyword(address.roadAddress);
   };
 
   return (
@@ -38,7 +48,7 @@ export function AddressSection({
 
       <AddressSearchInput
         keyword={keyword}
-        onChangeKeyword={setKeyword}
+        onChangeKeyword={handleChangeKeyword}
         onSearch={handleSearch}
       />
 
