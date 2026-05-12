@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
@@ -36,6 +36,11 @@ const INITIAL_ORDER_CONFIRMED: OrderConfirmMap = {
   contract: false,
 };
 
+interface InputPageProps {
+  currentStepIndex: number;
+  setCurrentStepIndex: Dispatch<SetStateAction<number>>;
+}
+
 function formatDate(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -43,9 +48,11 @@ function formatDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function InputPage() {
+export function InputPage({
+  currentStepIndex,
+  setCurrentStepIndex,
+}: InputPageProps) {
   const navigate = useNavigate();
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [contractType, setContractType] = useState<ContractType>('jeonse');
   const [deposit, setDeposit] = useState(0);
@@ -75,9 +82,11 @@ export function InputPage() {
   const hasMultiPageFiles = Object.values(files).some(
     (list) => list.length > 1,
   );
+
   const isOrderConfirmed = Object.entries(orderConfirmed).every(
     ([key, confirmed]) => files[key as UploaderKey].length <= 1 || confirmed,
   );
+
   const isContractStepNextDisabled = isSubmitting;
 
   const isBothScanned =
@@ -140,6 +149,7 @@ export function InputPage() {
         contractSessionId,
         ownerVerified: isOwnerVerifyConfirmed,
       });
+
       navigate('/analyze', { state: { sessionId } });
     } catch (error) {
       setSubmitError(getApiErrorMessage(error as ApiError));
