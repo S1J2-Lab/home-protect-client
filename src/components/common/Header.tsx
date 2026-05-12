@@ -5,16 +5,15 @@ const HEADER_HEIGHT = '56px';
 
 interface HeaderProps {
   title: string;
-  logo?: ReactNode;
   left?: ReactNode;
   right?: ReactNode;
 }
 
-export function Header({ title, logo, left, right }: HeaderProps) {
+export function Header({ title, left, right }: HeaderProps) {
   return (
     <Container>
       <Side>{left}</Side>
-      {logo ?? <Title>{title}</Title>}
+      <Title>{title}</Title>
       <Side>{right}</Side>
     </Container>
   );

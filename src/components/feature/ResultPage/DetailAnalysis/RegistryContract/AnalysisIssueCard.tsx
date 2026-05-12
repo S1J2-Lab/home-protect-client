@@ -5,20 +5,17 @@ import {
   getRiskLevelLabel,
   toTagVariant,
 } from '../../../../../utils/riskMapper';
-import { formatDetailContent } from '../../../../../utils/formatDetailContent';
 
 interface AnalysisIssueCardProps {
   order: number;
   item: AnalysisIssueItem;
   showRowDivider?: boolean;
-  isPreview?: boolean;
 }
 
 export function AnalysisIssueCard({
   order,
   item,
   showRowDivider = false,
-  isPreview = false,
 }: AnalysisIssueCardProps) {
   return (
     <IssueCard>
@@ -40,9 +37,7 @@ export function AnalysisIssueCard({
             showRowDivider={showRowDivider}
           >
             <InfoLabel>{detail.label}</InfoLabel>
-            <InfoText isPreview={isPreview}>
-              {formatDetailContent(detail.content)}
-            </InfoText>{' '}
+            <InfoText>{detail.content}</InfoText>
           </InfoBox>
         ))}
       </InfoGrid>
@@ -110,22 +105,10 @@ const InfoLabel = styled.p`
   font-weight: 600;
 `;
 
-const InfoText = styled.p<{ isPreview: boolean }>`
+const InfoText = styled.p`
   margin: 0;
   font-size: 12px;
   font-weight: 500;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text};
-
-  white-space: pre-line;
-  word-break: keep-all;
-
-  ${({ isPreview }) =>
-    isPreview &&
-    `
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    `}
 `;
