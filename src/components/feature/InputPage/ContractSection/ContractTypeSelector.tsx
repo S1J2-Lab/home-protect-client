@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import type { ContractType } from '../../../constants/contract';
-import { CONTRACT_TYPES } from '../../../constants/contract';
+import type { ContractType } from '../../../../constants/contract';
+import { CONTRACT_TYPES } from '../../../../constants/contract';
 
 interface ContractTypeSelectorProps {
   value: ContractType;

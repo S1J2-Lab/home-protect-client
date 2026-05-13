@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
-import { ContractTypeSelector } from '../../components/feature/InputPage/ContractTypeSelector';
-import { DatePickerInput } from '../../components/feature/InputPage/DatePickerInput';
+import { ContractTypeSelector } from '../../components/feature/InputPage/ContractSection/ContractTypeSelector';
+import { DatePickerInput } from '../../components/feature/InputPage/ContractSection/DatePickerInput';
 import type { ContractType } from '../../constants/contract';
 
 interface ContractSectionProps {
@@ -56,7 +56,13 @@ export function ContractSection({
         <Input
           id="deposit"
           value={deposit || ''}
-          onChange={(event) => onDepositChange(event.target.valueAsNumber)}
+          onChange={(event) =>
+            onDepositChange(
+              Number.isNaN(event.target.valueAsNumber)
+                ? 0
+                : event.target.valueAsNumber,
+            )
+          }
           type="number"
           placeholder="보증금을 입력해주세요"
           start={<span>₩</span>}
@@ -71,7 +77,11 @@ export function ContractSection({
             id="monthlyRent"
             value={monthlyRent || ''}
             onChange={(event) =>
-              onMonthlyRentChange(event.target.valueAsNumber)
+              onMonthlyRentChange(
+                Number.isNaN(event.target.valueAsNumber)
+                  ? 0
+                  : event.target.valueAsNumber,
+              )
             }
             type="number"
             placeholder="월세를 입력해주세요"

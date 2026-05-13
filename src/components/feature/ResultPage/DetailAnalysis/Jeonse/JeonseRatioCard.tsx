@@ -26,7 +26,7 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
     sampleCount,
   } = jeonseRatio;
 
-  const hasMarketData = sampleCount > 0;
+  const hasMarketData = (sampleCount ?? 0) > 0;
   const safeRatio = Math.min(Math.max(ratioPercent ?? 0, 0), 100);
   const notice = hasMarketData
     ? getRatioNotice(safeRatio)
