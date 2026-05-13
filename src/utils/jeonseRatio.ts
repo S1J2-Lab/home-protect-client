@@ -10,6 +10,10 @@ export function getRatioNotice(ratio: number) {
   return '전세가율이 매우 높아 깡통전세 위험이 있습니다. 계약 전 반드시 추가 확인이 필요해요.';
 }
 
-export function formatPrice(price: number) {
+export function formatPrice(price: number | null | undefined) {
+  if (price == null) {
+    return '정보 없음';
+  }
+
   return `${price.toLocaleString()}원`;
 }

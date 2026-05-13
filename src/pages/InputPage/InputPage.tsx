@@ -78,7 +78,13 @@ export function InputPage() {
   const isOrderConfirmed = Object.entries(orderConfirmed).every(
     ([key, confirmed]) => files[key as UploaderKey].length <= 1 || confirmed,
   );
-  const isContractStepNextDisabled = isSubmitting;
+  const isContractFormValid =
+    deposit > 0 &&
+    startDate !== null &&
+    endDate !== null &&
+    (contractType === 'jeonse' || monthlyRent > 0);
+
+  const isContractStepNextDisabled = !isContractFormValid || isSubmitting;
 
   const isBothScanned =
     scanSessionIds.registry !== undefined &&
