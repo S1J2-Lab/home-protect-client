@@ -60,7 +60,7 @@ export function AppRouter() {
                     <Button
                       variant="ghost"
                       tone="black"
-                      size="md"
+                      size="lg"
                       iconStart={<ChevronLeft />}
                       aria-label="이전"
                       onClick={() => navigate(-1)}
@@ -85,7 +85,7 @@ export function AppRouter() {
                     <Button
                       variant="ghost"
                       tone="blue"
-                      size="md"
+                      size="lg"
                       iconStart={<ChevronLeft />}
                       aria-label="이전"
                       onClick={() => navigate(-1)}
@@ -111,7 +111,7 @@ export function AppRouter() {
                     <Button
                       variant="ghost"
                       tone="black"
-                      size="md"
+                      size="lg"
                       iconStart={<ChevronLeft />}
                       aria-label="이전"
                       onClick={() => navigate(-1)}

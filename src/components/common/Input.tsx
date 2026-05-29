@@ -64,7 +64,7 @@ const Slot = styled.span<{
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   pointer-events: ${({ $interactive, $disabled }) =>
     $disabled ? 'none' : $interactive ? 'auto' : 'none'};
@@ -76,13 +76,13 @@ const StyledInput = styled.input<{ $hasStart: boolean; $hasEnd: boolean }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.bg};
   border-radius: ${({ theme }) => theme.radius.md};
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition:
     border-color 0.15s,
     background 0.15s;
 
-  padding: 14px ${({ $hasEnd }) => ($hasEnd ? '40px' : '14px')} 14px
+  padding: 12px ${({ $hasEnd }) => ($hasEnd ? '40px' : '14px')} 12px
     ${({ $hasStart }) => ($hasStart ? '40px' : '14px')};
 
   &:focus {

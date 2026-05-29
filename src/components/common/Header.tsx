@@ -22,7 +22,7 @@ export function Header({ title, logo, left, right }: HeaderProps) {
 
 const Container = styled.header`
   display: grid;
-  grid-template-columns: 32px 1fr 32px;
+  grid-template-columns: 40px 1fr 40px;
   align-items: center;
   height: ${HEADER_HEIGHT};
   padding: 0 20px;
@@ -39,7 +39,7 @@ const Side = styled.div`
 const Title = styled.h1`
   flex: 1;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   overflow: hidden;
   white-space: nowrap;
