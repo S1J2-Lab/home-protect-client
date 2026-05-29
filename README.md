@@ -43,7 +43,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <br />
 
-```
+```bash
 [완전 무방비]  ────────  [지켜줘홈즈]  ────────  [전문가 의뢰]
                           │
                파일 업로드 + 간단한 정보 입력
@@ -61,8 +61,8 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <div align="center">
 
-| 분석 소요 시간 | 이용 비용 | 회원가입 | 지원 파일 |
-|:---:|:---:|:---:|:---:|
+| 분석 소요 시간 |   이용 비용   |  회원가입  |    지원 파일    |
+| :------------: | :-----------: | :--------: | :-------------: |
 | 평균 **1~2분** | **완전 무료** | **불필요** | PDF · JPG · PNG |
 
 </div>
@@ -105,12 +105,12 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 4가지 분석이 **병렬**로 실행되며, 각 단계가 완료되는 즉시 실시간으로 화면에 전달됩니다.
 
-| 분석 항목 | 데이터 소스 |
-|:---|:---|
-| 전세가율 | 서울시 전월세·매매 실거래가 공공 API |
-| 등기부등본 | CLOVA OCR → Gemini AI |
+| 분석 항목             | 데이터 소스                               |
+| :-------------------- | :---------------------------------------- |
+| 전세가율              | 서울시 전월세·매매 실거래가 공공 API      |
+| 등기부등본            | CLOVA OCR → Gemini AI                     |
 | 임대차계약서 독소조항 | CLOVA OCR → Claude AI + Pinecone 판례 RAG |
-| 건축물 현황 | 국토교통부 건축물대장 API |
+| 건축물 현황           | 국토교통부 건축물대장 API                 |
 
 <br />
 
@@ -130,17 +130,17 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 **전세가율 판정 기준**
 
-| 전세가율 | 판정 |
-|:-------:|:----:|
+| 전세가율 |             판정             |
+| :------: | :--------------------------: |
 | 80% 이상 | 🔴 위험 — 깡통전세 위험 경고 |
-| 60 ~ 80% | 🟡 주의 — 추가 확인 필요 |
-| 60% 미만 | 🟢 안전 |
+| 60 ~ 80% |   🟡 주의 — 추가 확인 필요   |
+| 60% 미만 |           🟢 안전            |
 
 **계약서 독소조항 분류**
 
-| 분류 | 설명 |
-|:---:|:---|
-| 🔴 **danger** | 판례 근거 있는 고위험 조항 |
+|      분류      | 설명                        |
+| :------------: | :-------------------------- |
+| 🔴 **danger**  | 판례 근거 있는 고위험 조항  |
 | 🟡 **caution** | AI 법리 판단 기반 주의 조항 |
 
 ---
@@ -215,7 +215,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 ### 로컬 실행 — Frontend
 
 ```bash
-git clone https://github.com/your-org/home-protect-client.git
+git clone https://github.com/S1J2-Lab/home-protect-client.git
 cd home-protect-client
 
 yarn install
@@ -229,7 +229,7 @@ yarn dev
 ### 로컬 실행 — Backend
 
 ```bash
-git clone https://github.com/your-org/home-protect-server.git
+git clone https://github.com/S1J2-Lab/home-protect-server.git
 cd home-protect-server
 
 # .env 에 외부 API 키 설정 필요
@@ -249,11 +249,11 @@ docker-compose up -d
 
 <div align="center">
 
-| **이세비** | **조지현** | **박지현** |
-|:---:|:---:|:---:|
-| <img src="https://github.com/2seb2.png" width="80" style="border-radius:50%" /> | <img src="https://github.com/zeon0xx0.png" width="80" style="border-radius:50%" /> | <img src="https://github.com/jjhparkk.png" width="80" style="border-radius:50%" /> |
-| Frontend | Frontend | Backend |
-| [@2seb2](https://github.com/2seb2) | [@zeon0xx0](https://github.com/zeon0xx0) | [@jjhparkk](https://github.com/jjhparkk) |
+|                                                  **이세비**                                                  |                                                    **조지현**                                                    |                                                   **박지현**                                                    |
+| :----------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| <img src="https://github.com/2seb2.png" width="80" style="border-radius:50%" alt="이세비의 프로필 이미지" /> | <img src="https://github.com/zeon0xx0.png" width="80" style="border-radius:50%"  alt="조지현의 프로필 이미지" /> | <img src="https://github.com/jjhparkk.png" width="80" style="border-radius:50%" alt="박지현의 프로필 이미지" /> |
+|                                                   Frontend                                                   |                                                     Frontend                                                     |                                                     Backend                                                     |
+|                                      [@2seb2](https://github.com/2seb2)                                      |                                     [@zeon0xx0](https://github.com/zeon0xx0)                                     |                                    [@jjhparkk](https://github.com/jjhparkk)                                     |
 
 </div>
 
