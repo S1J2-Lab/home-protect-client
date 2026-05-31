@@ -46,6 +46,7 @@ export function GlobalStyles() {
         textarea,
         select {
           border: 1px solid ${theme.colors.border};
+          touch-action: manipulation;
         }
 
         a {

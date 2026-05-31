@@ -117,7 +117,7 @@ export function ContractSection({
 
 const SectionTitle = styled.h2`
   display: block;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 8px;

@@ -70,7 +70,7 @@ const InputButton = styled.button<{ $isEmpty: boolean }>`
   background: ${({ theme }) => theme.colors.bg};
   color: ${({ theme, $isEmpty }) =>
     $isEmpty ? theme.colors.textMuted : theme.colors.text};
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
 
   &::placeholder {
