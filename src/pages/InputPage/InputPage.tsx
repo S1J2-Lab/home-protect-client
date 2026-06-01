@@ -21,6 +21,7 @@ import {
   getContractSessionId,
   clearAnalysisStorage,
 } from '../../utils/analysisStorage';
+import { useBeforeUnload } from '../../hooks/useBeforeUnload';
 
 const INPUT_STEPS = ['address', 'contract', 'upload'] as const;
 
@@ -64,6 +65,17 @@ export function InputPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [addressKeyword, setAddressKeyword] = useState('');
+
+  const hasInput =
+    selectedAddress !== null ||
+    deposit > 0 ||
+    startDate !== null ||
+    endDate !== null ||
+    files.registry.length > 0 ||
+    files.contract.length > 0;
+
+  useBeforeUnload(hasInput);
+
   useEffect(() => {
     clearAnalysisStorage();
   }, []);
