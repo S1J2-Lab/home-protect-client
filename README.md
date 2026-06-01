@@ -79,7 +79,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 주소 검색 → 계약 정보 입력 → 등기부등본·계약서 파일 업로드 화면 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/step1-input.gif" width="80%" alt="Step 1: 정보 입력 및 파일 업로드" />
+  <img src="https://github.com/user-attachments/assets/b5b349c6-8473-4264-abbd-a7096ff90648" width="80%" alt="Step 1: 정보 입력 및 파일 업로드" />
 </div>
 
 <br />
@@ -98,7 +98,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 분석 진행 로딩 화면 → SSE로 4개 단계 순차 완료되는 화면 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/step2-analyzing.gif" width="80%" alt="Step 2: AI 분석 진행" />
+  <img src="https://github.com/user-attachments/assets/3ec3d19b-7480-455c-9faf-7789b854bb9d" width="80%" alt="Step 2: AI 분석 진행" />
 </div>
 
 <br />
@@ -155,7 +155,6 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Emotion](https://img.shields.io/badge/Emotion-C865B9?style=for-the-badge&logo=css3&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-433E38?style=for-the-badge&logo=react&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
 <br />
