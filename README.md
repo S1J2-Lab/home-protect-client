@@ -98,7 +98,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 분석 진행 로딩 화면 → SSE로 4개 단계 순차 완료되는 화면 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/3ec3d19b-7480-455c-9faf-7789b854bb9d" width="80%" alt="Step 2: AI 분석 진행" />
+  <img src="https://github.com/user-attachments/assets/b9a77435-8738-4a13-a91e-7c48b655c84d" width="80%" alt="Step 2: AI 분석 진행" />
 </div>
 
 <br />
@@ -120,7 +120,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 분석 결과 화면 (위험도 표시, 독소조항 상세, 체크리스트) → PDF 다운로드 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/step3-result.gif" width="80%" alt="Step 3: 결과 확인 및 PDF 다운로드" />
+  <img src="https://github.com/user-attachments/assets/8f38df57-691f-4f66-8deb-482411776baa" width="80%" alt="Step 3: 결과 확인 및 PDF 다운로드" />
 </div>
 
 <br />
