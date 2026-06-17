@@ -1,7 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './',
+  testMatch: '**/*.spec.ts',
+  testIgnore: '**/node_modules/**',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -26,7 +28,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'yarn dev',
+    command: 'yarn --cwd .. dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
