@@ -1,9 +1,12 @@
+import path from 'path';
 import type { Page } from '@playwright/test';
 
+const FIXTURES_DIR = path.join(__dirname, '../fixtures/testFiles');
+
 export const TEST_FILES = {
-  registry: 'e2e/fixtures/testFiles/registry.pdf',
-  contract: 'e2e/fixtures/testFiles/contract.pdf',
-  contractWithPii: 'e2e/fixtures/testFiles/contract-with-pii.pdf',
+  registry: path.join(FIXTURES_DIR, 'registry.pdf'),
+  contract: path.join(FIXTURES_DIR, 'contract.pdf'),
+  contractWithPii: path.join(FIXTURES_DIR, 'contract-with-pii.pdf'),
 };
 
 export class InputPagePOM {
@@ -38,12 +41,16 @@ export class InputPagePOM {
     return this.page.getByLabel('월세');
   }
 
-  get startDateInput() {
-    return this.page.getByPlaceholder('연도-월-일').first();
+  get startDateButton() {
+    return this.page.getByRole('button', { name: '연도-월-일' }).first();
   }
 
-  get endDateInput() {
-    return this.page.getByPlaceholder('연도-월-일').last();
+  get endDateButton() {
+    return this.page.getByRole('button', { name: '연도-월-일' }).last();
+  }
+
+  get monthlyRentField() {
+    return this.page.getByLabel('월세');
   }
 
   // Step 3 — 파일 업로드
@@ -83,5 +90,31 @@ export class InputPagePOM {
   async searchAddress(keyword: string) {
     await this.addressSearchInput.fill(keyword);
     await this.addressSearchButton.click();
+  }
+
+  async goToStep2() {
+    await this.searchAddress('테헤란로');
+    await this.addressResults.click();
+    await this.nextButton.click();
+  }
+
+  async fillContractForm() {
+    await this.depositInput.fill('30000');
+
+    await this.startDateButton.click();
+    await this.page
+      .locator(
+        '.react-datepicker__day:not(.react-datepicker__day--outside-month)',
+      )
+      .first()
+      .click();
+
+    await this.endDateButton.click();
+    await this.page
+      .locator(
+        '.react-datepicker__day:not(.react-datepicker__day--outside-month)',
+      )
+      .last()
+      .click();
   }
 }

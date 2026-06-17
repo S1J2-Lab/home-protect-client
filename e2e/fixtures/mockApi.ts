@@ -138,7 +138,11 @@ export async function mockAnalysisInitFailed(page: Page) {
   await page.route('**/analysis/init', (route) =>
     route.fulfill({
       status: 500,
-      json: { message: '서버 오류가 발생했어요.' },
+      json: {
+        status: 500,
+        code: 'INTERNAL_SERVER_ERROR',
+        message: '서버 오류가 발생했어요.',
+      },
     }),
   );
 }
