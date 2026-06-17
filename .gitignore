@@ -51,3 +51,7 @@ yarn-cache/
 # 개인 설정
 CLAUDE.md
 docs/
+
+# Playwright
+/playwright-report/
+/test-results/
