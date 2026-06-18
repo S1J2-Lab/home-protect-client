@@ -1,27 +1,25 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAnalyzingProgress } from '../../hooks/useAnalyzingProgress';
 import type { AnalysisPageStatus } from '../../types/analysis';
 import { AnalysisErrorView } from './AnalysisErrorView';
 import { AnalysisLoadingView } from './AnalysisLoadingView';
-import { saveAnalysisSessionId } from '../../utils/analysisStorage';
-
-interface AnalysisLocationState {
-  sessionId?: string;
-}
+import { getAnalysisSessionId } from '../../utils/analysisStorage';
+import { useBeforeUnload } from '../../hooks/useBeforeUnload';
 
 export function AnalysisLoadingPage() {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const state = location.state as AnalysisLocationState | null;
-  const sessionId = state?.sessionId ?? null;
+  const sessionId = getAnalysisSessionId();
   const isSessionIdMissing = !sessionId;
 
   const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
   const [errorMessage, setErrorMessage] = useState('');
   const [retryKey, setRetryKey] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useBeforeUnload(!isCompleted);
 
   const completeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -31,15 +29,10 @@ export function AnalysisLoadingPage() {
     }
 
     completeTimerRef.current = setTimeout(() => {
-      if (sessionId) {
-        saveAnalysisSessionId(sessionId);
-      }
-
-      navigate('/result', {
-        state: { sessionId },
-      });
+      setIsCompleted(true);
+      navigate('/result');
     }, 700);
-  }, [navigate, sessionId]);
+  }, [navigate]);
 
   useEffect(() => {
     return () => {

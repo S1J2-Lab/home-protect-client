@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
 
 import type { ResultData } from '../../types/result';
 import { ChecklistSection } from './ChecklistSection';
@@ -20,8 +19,7 @@ import {
 import { AlertTriangle, LoaderCircle } from 'lucide-react';
 
 export function ResultPage() {
-  const location = useLocation();
-  const sessionId = location.state?.sessionId ?? getAnalysisSessionId();
+  const sessionId = getAnalysisSessionId();
 
   const pdfContentRef = useRef<HTMLDivElement | null>(null);
   const savedResult = getAnalysisResultFromStorage();
