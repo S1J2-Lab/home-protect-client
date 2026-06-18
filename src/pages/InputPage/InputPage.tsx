@@ -65,7 +65,6 @@ export function InputPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [addressKeyword, setAddressKeyword] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const hasInput =
     selectedAddress !== null ||
@@ -75,7 +74,7 @@ export function InputPage() {
     files.registry.length > 0 ||
     files.contract.length > 0;
 
-  useBeforeUnload(hasInput && !isSubmitted);
+  const isActiveRef = useBeforeUnload(hasInput);
 
   useEffect(() => {
     clearAnalysisStorage();
@@ -159,7 +158,7 @@ export function InputPage() {
         contractSessionId,
         ownerVerified: isOwnerVerifyConfirmed,
       });
-      setIsSubmitted(true);
+      isActiveRef.current = false;
       navigate('/analyze');
     } catch (error) {
       setSubmitError(getApiErrorMessage(error as ApiError));

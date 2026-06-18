@@ -17,9 +17,8 @@ export function AnalysisLoadingPage() {
   const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
   const [errorMessage, setErrorMessage] = useState('');
   const [retryKey, setRetryKey] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
 
-  useBeforeUnload(!isCompleted);
+  const isActiveRef = useBeforeUnload(true);
 
   const completeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -29,10 +28,10 @@ export function AnalysisLoadingPage() {
     }
 
     completeTimerRef.current = setTimeout(() => {
-      setIsCompleted(true);
+      isActiveRef.current = false;
       navigate('/result');
     }, 700);
-  }, [navigate]);
+  }, [navigate, isActiveRef]);
 
   useEffect(() => {
     return () => {
