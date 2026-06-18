@@ -3,7 +3,7 @@ import {
   RouterProvider,
   useNavigate,
 } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, House } from 'lucide-react';
 
 import { LandingPage } from '../pages/LandingPage/LandingPage';
 import { InputPage } from '../pages/InputPage/InputPage';
@@ -66,7 +66,7 @@ function InputLayout() {
                 size="lg"
                 iconStart={<ChevronLeft />}
                 aria-label="이전"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/')}
               />
             }
           />
@@ -121,9 +121,9 @@ function ResultLayout() {
                 variant="ghost"
                 tone="black"
                 size="lg"
-                iconStart={<ChevronLeft />}
-                aria-label="이전"
-                onClick={() => navigate(-1)}
+                iconStart={<House />}
+                aria-label="홈으로"
+                onClick={() => navigate('/')}
               />
             }
           />

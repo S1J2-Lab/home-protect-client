@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useBlocker } from 'react-router-dom';
 
 const UNLOAD_MESSAGE =
@@ -6,6 +6,10 @@ const UNLOAD_MESSAGE =
 
 export function useBeforeUnload(isActive: boolean) {
   const isActiveRef = useRef(isActive);
+
+  useLayoutEffect(() => {
+    isActiveRef.current = isActive;
+  });
 
   useEffect(() => {
     if (!isActive) return;

@@ -11,7 +11,7 @@ import { MOCK_ADDRESS_RESULTS } from './fixtures/mockData';
 test.describe('InputPage — Step 1 (주소)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/input');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => sessionStorage.clear());
   });
 
   // I-01
@@ -66,7 +66,7 @@ test.describe('InputPage — Step 2 (계약 정보)', () => {
   test.beforeEach(async ({ page }) => {
     await mockAllApis(page);
     await page.goto('/input');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => sessionStorage.clear());
     const input = new InputPagePOM(page);
     await input.goToStep2();
   });
@@ -153,7 +153,7 @@ test.describe('InputPage — Step 3 (서류 업로드)', () => {
   test.beforeEach(async ({ page }) => {
     await mockAllApis(page);
     await page.goto('/input');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => sessionStorage.clear());
     const input = new InputPagePOM(page);
     await input.goToStep2();
     await input.fillContractForm();
@@ -332,5 +332,90 @@ test.describe('InputPage — Step 3 (서류 업로드)', () => {
     await expect(
       page.getByRole('button', { name: '이 순서로 확정하기' }).first(),
     ).toBeVisible();
+  });
+});
+
+test.describe('InputPage — 이탈 경고', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockAllApis(page);
+    await page.goto('/input');
+    await page.evaluate(() => sessionStorage.clear());
+  });
+
+  // I-19
+  test('입력값이 있을 때 헤더 이전 버튼을 누르면 경고창이 뜬다', async ({
+    page,
+  }) => {
+    const input = new InputPagePOM(page);
+
+    await input.searchAddress('테헤란로');
+    await input.addressResults.click();
+
+    const dialogPromise = page.waitForEvent('dialog');
+    await input.headerBackButton.click();
+    const dialog = await dialogPromise;
+
+    expect(dialog.type()).toBe('confirm');
+    await dialog.dismiss();
+  });
+
+  // I-20
+  test('경고창에서 취소하면 /input 페이지가 유지된다', async ({ page }) => {
+    const input = new InputPagePOM(page);
+
+    await input.searchAddress('테헤란로');
+    await input.addressResults.click();
+
+    page.on('dialog', (dialog) => dialog.dismiss());
+    await input.headerBackButton.click();
+
+    await expect(page).toHaveURL('/input');
+  });
+
+  // I-21
+  test('경고창에서 확인하면 / 페이지로 이동한다', async ({ page }) => {
+    const input = new InputPagePOM(page);
+
+    await input.searchAddress('테헤란로');
+    await input.addressResults.click();
+
+    page.on('dialog', (dialog) => dialog.accept());
+    await input.headerBackButton.click();
+
+    await expect(page).toHaveURL('/');
+  });
+
+  // I-22
+  test('정상 제출 시 경고창이 뜨지 않고 /analyze로 이동한다', async ({
+    page,
+  }) => {
+    const input = new InputPagePOM(page);
+
+    let dialogFired = false;
+    page.on('dialog', () => {
+      dialogFired = true;
+    });
+
+    await input.goToStep2();
+    await input.fillContractForm();
+    await input.nextButton.click();
+    await input.registryFileInput.setInputFiles(TEST_FILES.registry);
+    await page
+      .getByRole('button', { name: '이 순서로 확정하기' })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('button', { name: '순서 변경하기' }).first(),
+    ).toBeVisible();
+    await input.contractFileInput.setInputFiles(TEST_FILES.contract);
+    await page.getByRole('button', { name: '이 순서로 확정하기' }).click();
+    await expect(
+      page.getByRole('button', { name: '순서 변경하기' }).last(),
+    ).toBeVisible();
+    await input.ownerVerifyToggle.click();
+    await input.submitButton.click();
+
+    await expect(page).toHaveURL('/analyze');
+    expect(dialogFired).toBe(false);
   });
 });

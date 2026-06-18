@@ -79,6 +79,10 @@ export class InputPagePOM {
     return this.page.getByRole('button', { name: '이전' });
   }
 
+  get headerBackButton() {
+    return this.page.getByRole('button', { name: '이전', exact: true });
+  }
+
   get submitButton() {
     return this.page.getByRole('button', { name: '다음: 분석 시작하기' });
   }
