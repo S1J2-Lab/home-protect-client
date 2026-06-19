@@ -94,7 +94,7 @@ function AnalyzingLayout() {
                 size="lg"
                 iconStart={<ChevronLeft />}
                 aria-label="이전"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/input')}
               />
             }
           />

@@ -55,6 +55,7 @@ export function AnalysisLoadingPage() {
 
   const handleRetry = () => {
     if (isSessionIdMissing) {
+      isActiveRef.current = false;
       navigate('/input');
       return;
     }
