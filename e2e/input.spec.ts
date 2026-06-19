@@ -351,6 +351,8 @@ test.describe('InputPage — 이탈 경고', () => {
     await input.searchAddress('테헤란로');
     await input.addressResults.click();
 
+    await expect(input.headerBackButton).toBeVisible();
+
     const dialogPromise = page.waitForEvent('dialog');
     await input.headerBackButton.click();
     const dialog = await dialogPromise;
