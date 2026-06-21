@@ -74,7 +74,7 @@ export function InputPage() {
     files.registry.length > 0 ||
     files.contract.length > 0;
 
-  useBeforeUnload(hasInput);
+  const isActiveRef = useBeforeUnload(hasInput);
 
   useEffect(() => {
     clearAnalysisStorage();
@@ -158,7 +158,8 @@ export function InputPage() {
         contractSessionId,
         ownerVerified: isOwnerVerifyConfirmed,
       });
-      navigate('/analyze', { state: { sessionId } });
+      isActiveRef.current = false;
+      navigate('/analyze');
     } catch (error) {
       setSubmitError(getApiErrorMessage(error as ApiError));
     } finally {
