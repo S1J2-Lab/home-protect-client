@@ -79,7 +79,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 주소 검색 → 계약 정보 입력 → 등기부등본·계약서 파일 업로드 화면 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b5b349c6-8473-4264-abbd-a7096ff90648" width="80%" alt="Step 1: 정보 입력 및 파일 업로드" />
+  <img src="https://github.com/user-attachments/assets/b5b349c6-8473-4264-abbd-a7096ff90648" width="230px" alt="Step 1: 정보 입력 및 파일 업로드" />
 </div>
 
 <br />
@@ -98,7 +98,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 분석 진행 로딩 화면 → SSE로 4개 단계 순차 완료되는 화면 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b9a77435-8738-4a13-a91e-7c48b655c84d" width="80%" alt="Step 2: AI 분석 진행" />
+  <img src="https://github.com/user-attachments/assets/b9a77435-8738-4a13-a91e-7c48b655c84d" width="230px" alt="Step 2: AI 분석 진행" />
 </div>
 
 <br />
@@ -120,7 +120,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- GIF 자리: 분석 결과 화면 (위험도 표시, 독소조항 상세, 체크리스트) → PDF 다운로드 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8f38df57-691f-4f66-8deb-482411776baa" width="80%" alt="Step 3: 결과 확인 및 PDF 다운로드" />
+  <img src="https://github.com/user-attachments/assets/8f38df57-691f-4f66-8deb-482411776baa" width="230px" alt="Step 3: 결과 확인 및 PDF 다운로드" />
 </div>
 
 <br />
@@ -193,7 +193,7 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 <!-- 아키텍처 다이어그램 이미지: 직접 제작 후 교체해 주세요 -->
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/architecture-diagram.png" width="90%" alt="지켜줘홈즈 아키텍처 다이어그램" />
+  <img src="https://github.com/user-attachments/assets/architecture-diagram.png" width="90%" alt="지켜줘홈즈 아키텍처 다이어그램(완성 후 업로드 예정)" />
 </div>
 
 <br />
@@ -205,9 +205,13 @@ AI가 1~2분 만에 전세가율 · 등기부등본 · 계약서 독소조항 ·
 
 ## 🚀 시작하기
 
-### 서비스 이용 (바로 사용)
+### 서비스 이용 (현재 배포 중단)
 
 > **[https://homeprotect.shop](https://homeprotect.shop)**
+
+### 테스트 데이터
+
+> [여기에서 다운 받아 테스트해보세요!](https://www.notion.so/3281dbafa868811ba8f7e8b264735ce8?source=copy_link)
 
 <br />
 
@@ -233,9 +237,8 @@ cd home-protect-server
 
 # .env 에 외부 API 키 설정 필요
 # (공공데이터 포털, CLOVA OCR, Gemini, Claude, Pinecone)
-cp .env.example .env
 
-docker-compose up -d
+./gradlew bootRun
 ```
 
 > 외부 AI/OCR API 키 없이는 분석 기능이 동작하지 않습니다.
