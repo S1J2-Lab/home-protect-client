@@ -54,7 +54,6 @@ docs/
 
 # Playwright (e2e/ 독립 프로젝트, node-modules linker 사용)
 e2e/node_modules/
-e2e/yarn.lock
 e2e/.yarn/
 e2e/playwright-report/
 e2e/test-results/
